@@ -19,5 +19,5 @@ metadata/_edit_group_ = true
 shape = SubResource("CircleShape2D_gijtc")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(0.957985, 0.337165, 0.394999, 1)
+color = Color(0.55, 0.55, 0.55, 1)
 polygon = PackedVector2Array(0, -18, -14, 12, 14, 12)

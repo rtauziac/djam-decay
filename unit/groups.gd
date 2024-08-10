@@ -6,14 +6,14 @@ func _ready():
 
 
 func make_initial_groups():
-	var unit_scene = preload("res://unit/unit.tscn")
 	var rand_start_angle = randf() * PI * 2
-	for i_race in 3:
+	var races: Array = [preload("res://unit/rat.tscn"), preload("res://unit/cat.tscn"), preload("res://unit/dog.tscn")]
+	for i_race in races.size():
 		var group_node = preload("res://unit/group.tscn").instantiate()
 		group_node.global_position = Vector2.UP.rotated(rand_start_angle + i_race * PI * 0.666) * 100
 		add_child(group_node)
 		for i_unit in 8: 
-			var unit = unit_scene.instantiate()
+			var unit = races[i_race].instantiate()
 			unit.global_position = group_node.global_position + Vector2.RIGHT.rotated(randf() * PI * 2)
 			unit.add_to_group(group_node.name)
 			unit.add_to_group(&"unit")

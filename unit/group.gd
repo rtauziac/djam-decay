@@ -19,8 +19,11 @@ func _on_input_event(viewport: Viewport, event, shape_idx):
 	if event is InputEventMouseButton:
 		var eventMouseButton := event as InputEventMouseButton
 		if not eventMouseButton.pressed:
-			selected = true
-			viewport.set_input_as_handled()
+			var group_nodes = get_tree().get_nodes_in_group(name)
+			var units = group_nodes as Array[Unit]
+			if Global.game.current_player.race == units[0].race:
+				selected = true
+				viewport.set_input_as_handled()
 
 
 func _unhandled_input(event):

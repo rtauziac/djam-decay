@@ -1,11 +1,12 @@
 extends RigidBody2D
+class_name Unit
 
-enum UnitRace {
+enum Race {
 	Rat,
 	Cat,
 	Dog
 }
 
 
-@export var race: UnitRace
+@export var race: Race
 

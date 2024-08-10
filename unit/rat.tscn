@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyxxq0hnif0ue"]
+
+[ext_resource type="PackedScene" uid="uid://d0ba2gtndkttu" path="res://unit/unit.tscn" id="1_qo00k"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q1als"]
+resource_local_to_scene = true
+radius = 20.0
+
+[node name="RigidBody2D" instance=ExtResource("1_qo00k")]
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CircleShape2D_q1als")
+
+[node name="Polygon2D" parent="." index="1"]
+color = Color(0.901476, 0.28669, 0.324367, 1)
