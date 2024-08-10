@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://ywgaelhpgpby"]
+
+[ext_resource type="Script" path="res://unit/groups.gd" id="1_n6ffw"]
+
+[sub_resource type="GDScript" id="GDScript_3igke"]
+script/source = "extends Node
+
+
+func _ready():
+	await get_tree().process_frame
+	print(\"Group count: %d\" % get_parent().get_node(\"Groups\").get_child_count())
+	await get_tree().process_frame
+	var allUnits = get_tree().get_nodes_in_group(&\"unit\")
+	print(\"Unit count: %d\" % allUnits.size())
+"
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Test" type="Node" parent="."]
+script = SubResource("GDScript_3igke")
+
+[node name="Groups" type="Node2D" parent="."]
+script = ExtResource("1_n6ffw")
+
+[node name="Camera2D" type="Camera2D" parent="."]
