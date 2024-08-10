@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://ywgaelhpgpby"]
+[gd_scene load_steps=7 format=3 uid="uid://ywgaelhpgpby"]
 
 [ext_resource type="Script" path="res://GameManagement/game.gd" id="1_bo2r8"]
 [ext_resource type="Script" path="res://unit/groups.gd" id="1_n6ffw"]
@@ -14,15 +14,40 @@ func _ready():
 	await get_tree().process_frame
 	var allUnits = get_tree().get_nodes_in_group(&\"unit\")
 	print(\"Unit count: %d\" % allUnits.size())
+
+
 "
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_n13jf"]
+vertices = PackedVector2Array(248, 24, 486, -243, 507, 278, 242, 54, 236, -6, 206, 134, -422, 237, -438, -241, 147, -21, 211, -28, 187, 157, 178, -33, 156, 169, 123, 164, 98, 142, 86, 112, 92, 82, 128, 2)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(1, 0, 4), PackedInt32Array(5, 3, 2), PackedInt32Array(6, 7, 1, 8), PackedInt32Array(1, 4, 9), PackedInt32Array(10, 5, 2), PackedInt32Array(1, 9, 11), PackedInt32Array(12, 10, 2), PackedInt32Array(12, 2, 6, 13), PackedInt32Array(14, 13, 6), PackedInt32Array(15, 14, 6), PackedInt32Array(16, 15, 6), PackedInt32Array(17, 16, 6), PackedInt32Array(8, 17, 6), PackedInt32Array(1, 11, 8)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-459, -261, -442, 257, 528, 299, 506, -264)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+cell_size = 10.0
+agent_radius = 20.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f7jy1"]
+radius = 43.0
+height = 168.0
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Game" type="Node" parent="."]
-script = ExtResource("1_bo2r8")
-
 [node name="Test" type="Node" parent="."]
 script = SubResource("GDScript_3igke")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_n13jf")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="NavigationRegion2D"]
+position = Vector2(-328, -112)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/StaticBody2D"]
+position = Vector2(495, 180)
+rotation = 0.425299
+shape = SubResource("CapsuleShape2D_f7jy1")
+
+[node name="Game" type="Node" parent="."]
+script = ExtResource("1_bo2r8")
 
 [node name="Groups" type="Node2D" parent="."]
 script = ExtResource("1_n6ffw")

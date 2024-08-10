@@ -12,12 +12,13 @@ func make_initial_groups():
 		var group_node = preload("res://unit/group.tscn").instantiate()
 		group_node.global_position = Vector2.UP.rotated(rand_start_angle + i_race * PI * 0.666) * 100
 		add_child(group_node)
-		for i_unit in 8: 
-			var unit = races[i_race].instantiate()
-			unit.global_position = group_node.global_position + Vector2.RIGHT.rotated(randf() * PI * 2)
+		for i_unit in 8:
+			var unit: Unit = races[i_race].instantiate()
+			unit.global_position = group_node.global_position + Vector2.RIGHT.rotated(randf() * PI * 2) * 20
 			unit.add_to_group(group_node.name)
 			unit.add_to_group(&"unit")
 			get_parent().add_child(unit)
+			unit.go_to_position(group_node.global_position)
 
 
 func _physics_process(delta):

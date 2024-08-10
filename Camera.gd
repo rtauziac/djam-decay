@@ -17,11 +17,17 @@ func _unhandled_input(event):
 				moving = false
 				if has_moved:
 					get_tree().root.get_viewport().set_input_as_handled()
+		elif event_mouse_button.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			if zoom.length() > 0.4:
+				zoom *= 0.95
+		elif event_mouse_button.button_index == MOUSE_BUTTON_WHEEL_UP:
+			if zoom.length() < 2:
+				zoom *= 1.05
 	
 	if event is InputEventMouseMotion:
 		var event_mouse_motion: InputEventMouseMotion = event
 		
 		if moving:
-			translate(-event_mouse_motion.relative)
+			translate(-event_mouse_motion.relative / zoom)
 			has_moved = true
 			get_tree().root.get_viewport().set_input_as_handled()

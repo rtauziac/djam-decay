@@ -11,9 +11,18 @@ radius = 20.0
 
 [node name="RigidBody2D" type="RigidBody2D" groups=["unit"]]
 physics_material_override = SubResource("PhysicsMaterial_y364i")
+can_sleep = false
 lock_rotation = true
+linear_damp = 1.0
 script = ExtResource("1_gui11")
 metadata/_edit_group_ = true
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+target_desired_distance = 100.0
+avoidance_enabled = true
+radius = 30.0
+max_speed = 40.0
+debug_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_gijtc")
