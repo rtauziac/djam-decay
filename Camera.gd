@@ -4,7 +4,7 @@ var moving = false
 var has_moved = false
 
 
-func _unhandled_input(event):
+func _input(event):
 	if event is InputEventMouseButton:
 		var event_mouse_button: InputEventMouseButton = event
 		

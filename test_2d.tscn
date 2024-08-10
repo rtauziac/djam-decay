@@ -19,12 +19,12 @@ func _ready():
 "
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_n13jf"]
-vertices = PackedVector2Array(248, 24, 486, -243, 507, 278, 242, 54, 236, -6, 206, 134, -422, 237, -438, -241, 147, -21, 211, -28, 187, 157, 178, -33, 156, 169, 123, 164, 98, 142, 86, 112, 92, 82, 128, 2)
+vertices = PackedVector2Array(258, 23, 477, -233, 496, 267, 252, 57, 244, -12, 215, 139, -412, 228, -427, -231, 141, -29, 215, -37, 193, 165, 176, -43, 158, 179, 119, 173, 90, 148, 76, 113, 82, 79, 119, -3)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(1, 0, 4), PackedInt32Array(5, 3, 2), PackedInt32Array(6, 7, 1, 8), PackedInt32Array(1, 4, 9), PackedInt32Array(10, 5, 2), PackedInt32Array(1, 9, 11), PackedInt32Array(12, 10, 2), PackedInt32Array(12, 2, 6, 13), PackedInt32Array(14, 13, 6), PackedInt32Array(15, 14, 6), PackedInt32Array(16, 15, 6), PackedInt32Array(17, 16, 6), PackedInt32Array(8, 17, 6), PackedInt32Array(1, 11, 8)])
 outlines = Array[PackedVector2Array]([PackedVector2Array(-459, -261, -442, 257, 528, 299, 506, -264)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 cell_size = 10.0
-agent_radius = 20.0
+agent_radius = 30.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f7jy1"]
 radius = 43.0

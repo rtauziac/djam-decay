@@ -21,8 +21,8 @@ func _on_input_event(viewport: Viewport, event, shape_idx):
 		if not eventMouseButton.pressed:
 			var group_nodes = get_tree().get_nodes_in_group(name)
 			var units = group_nodes as Array[Unit]
-			if Global.game.current_player.race == units[0].race:
-				selected = true
+			if Global.game.current_player.race == units[0].race or true:
+				set_deferred("selected", true)
 				viewport.set_input_as_handled()
 
 
@@ -32,4 +32,4 @@ func _unhandled_input(event):
 		
 		if event_mouse_button.button_index == MOUSE_BUTTON_LEFT:
 			if not event_mouse_button.pressed:
-				selected = false
+				set_deferred("selected", false)

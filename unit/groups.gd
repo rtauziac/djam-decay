@@ -40,3 +40,18 @@ func _physics_process(delta):
 		group.global_position = bounds_new.get_center()
 		var selectable_group := group.find_child("CollisionShape2D") as SelectableGroup
 		group.radius = longest_distance
+
+
+func _input(event):
+	if event is InputEventMouseButton:
+		var eventMouseButton := event as InputEventMouseButton
+		if eventMouseButton.pressed:
+			if eventMouseButton.button_index == MOUSE_BUTTON_RIGHT:
+				#for group: SelectableGroup in get_children():
+				var group_units = get_children()
+				var selected_groups := group_units.filter(func (group: SelectableGroup): return group.selected)
+				if selected_groups.size() > 0:
+					for selected_group: SelectableGroup in selected_groups:
+						#get_global_mouse_position()
+						get_tree().call_group(selected_group.name, "go_to_position", get_global_mouse_position())
+					get_tree().root.get_viewport().set_input_as_handled()
