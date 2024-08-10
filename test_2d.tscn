@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ywgaelhpgpby"]
+[gd_scene load_steps=6 format=3 uid="uid://ywgaelhpgpby"]
 
 [ext_resource type="Script" path="res://GameManagement/game.gd" id="1_bo2r8"]
 [ext_resource type="Script" path="res://unit/groups.gd" id="1_n6ffw"]
@@ -19,16 +19,12 @@ func _ready():
 "
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_n13jf"]
-vertices = PackedVector2Array(258, 23, 477, -233, 496, 267, 252, 57, 244, -12, 215, 139, -412, 228, -427, -231, 141, -29, 215, -37, 193, 165, 176, -43, 158, 179, 119, 173, 90, 148, 76, 113, 82, 79, 119, -3)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(1, 0, 4), PackedInt32Array(5, 3, 2), PackedInt32Array(6, 7, 1, 8), PackedInt32Array(1, 4, 9), PackedInt32Array(10, 5, 2), PackedInt32Array(1, 9, 11), PackedInt32Array(12, 10, 2), PackedInt32Array(12, 2, 6, 13), PackedInt32Array(14, 13, 6), PackedInt32Array(15, 14, 6), PackedInt32Array(16, 15, 6), PackedInt32Array(17, 16, 6), PackedInt32Array(8, 17, 6), PackedInt32Array(1, 11, 8)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-459, -261, -442, 257, 528, 299, 506, -264)])
+vertices = PackedVector2Array(349, -210, 181, -160, -1075, -269, -1243, -352, -3003, -2380, 2438, -2374, 501, -88, 2468, 2443, 476, 133, -2957, 2382, 224, 138, 100, -4, -1130, 680, -1310, 371, -1386, 261, -1320, 73, -1235, -93, 225, -51, -1209, 370, -1503, -168, -1734, 123, -1684, 439, -1521, 544, -1398, 648, -1129, 511)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(6, 5, 7, 8), PackedInt32Array(8, 7, 9, 10), PackedInt32Array(11, 10, 9, 12), PackedInt32Array(13, 14, 15, 16, 2, 1, 17, 11, 18), PackedInt32Array(5, 6, 0), PackedInt32Array(4, 3, 19), PackedInt32Array(4, 19, 20), PackedInt32Array(9, 4, 20, 21), PackedInt32Array(9, 21, 22, 23), PackedInt32Array(24, 18, 11), PackedInt32Array(12, 24, 11), PackedInt32Array(9, 23, 12)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-3034, -2411, -2987, 2412, 2499, 2474, 2468, -2404)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 cell_size = 10.0
 agent_radius = 30.0
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_f7jy1"]
-radius = 43.0
-height = 168.0
 
 [node name="Node2D" type="Node2D"]
 
@@ -36,15 +32,16 @@ height = 168.0
 script = SubResource("GDScript_3igke")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(43, -106)
 navigation_polygon = SubResource("NavigationPolygon_n13jf")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="NavigationRegion2D"]
-position = Vector2(-328, -112)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="NavigationRegion2D/StaticBody2D"]
-position = Vector2(495, 180)
-rotation = 0.425299
-shape = SubResource("CapsuleShape2D_f7jy1")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="NavigationRegion2D/StaticBody2D"]
+polygon = PackedVector2Array(237, 108, 449, 104, 469, -75, 342, -177, 221, -141, 265, -35, 151, 9)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="NavigationRegion2D/StaticBody2D"]
+polygon = PackedVector2Array(-1240, -317, -1482, -146, -1702, 131, -1656, 421, -1502, 521, -1386, 619, -1160, 646, -1159, 519, -1226, 400, -1326, 402, -1420, 267, -1347, 59, -1262, -109, -1124, -260)
 
 [node name="Game" type="Node" parent="."]
 script = ExtResource("1_bo2r8")
