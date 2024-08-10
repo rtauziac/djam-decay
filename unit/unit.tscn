@@ -4,6 +4,7 @@
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_y364i"]
 friction = 0.0
+bounce = 0.2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gijtc"]
 resource_local_to_scene = true
@@ -18,7 +19,7 @@ script = ExtResource("1_gui11")
 metadata/_edit_group_ = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-target_desired_distance = 50.0
+target_desired_distance = 200.0
 path_max_distance = 20.0
 debug_enabled = true
 

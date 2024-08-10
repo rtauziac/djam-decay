@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://ywgaelhpgpby"]
+[gd_scene load_steps=9 format=3 uid="uid://ywgaelhpgpby"]
 
 [ext_resource type="Script" path="res://GameManagement/game.gd" id="1_bo2r8"]
 [ext_resource type="Script" path="res://unit/groups.gd" id="1_n6ffw"]
 [ext_resource type="Script" path="res://Camera.gd" id="2_fdhqp"]
 [ext_resource type="FontFile" uid="uid://b7bllu2giivqe" path="res://font/vinque rg.otf" id="4_yc54d"]
+[ext_resource type="Script" path="res://MainUI.gd" id="5_0pjp3"]
 
 [sub_resource type="GDScript" id="GDScript_3igke"]
 script/source = "extends Node
@@ -75,15 +76,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_qqolg")
+script = ExtResource("5_0pjp3")
 
-[node name="Label" type="Label" parent="CanvasLayer/UI"]
+[node name="TitleLabel" type="Label" parent="CanvasLayer/UI"]
+visible = false
+modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 72.0
+offset_left = 158.0
 offset_top = 61.0
-offset_right = -72.0
+offset_right = -158.0
 offset_bottom = -61.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -91,3 +95,5 @@ theme_type_variation = &"TitleLabel"
 text = "Next turn"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="player_changed" from="Game" to="Groups" method="_on_game_player_changed"]

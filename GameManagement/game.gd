@@ -3,6 +3,8 @@ class_name Game
 
 signal player_changed(player: Player)
 
+@export var stamina_start_amount = 600
+
 var players: Array[Player]
 var current_player: Player
 
@@ -27,7 +29,14 @@ func init_game():
 	dog_player.user_controlled = false
 	players.append(dog_player)
 	
-	current_player = rat_player
+	#current_player = rat_player
+	
+	await get_tree().create_timer(0.1).timeout
+	
+	Global.main_ui.show_title("Start game", func():
+		change_player(rat_player)
+		Global.main_ui.show_title("Rat team")
+		)
 
 
 func change_player(player: Player):
