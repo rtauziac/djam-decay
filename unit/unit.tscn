@@ -1,13 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://d0ba2gtndkttu"]
+[gd_scene load_steps=4 format=3 uid="uid://d0ba2gtndkttu"]
 
 [ext_resource type="Script" path="res://unit/unit.gd" id="1_gui11"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_y364i"]
+friction = 0.24
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_gijtc"]
+resource_local_to_scene = true
 radius = 20.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" groups=["unit"]]
-motion_mode = 1
-wall_min_slide_angle = 0.0174533
+[node name="RigidBody2D" type="RigidBody2D" groups=["unit"]]
+physics_material_override = SubResource("PhysicsMaterial_y364i")
+lock_rotation = true
 script = ExtResource("1_gui11")
 metadata/_edit_group_ = true
 

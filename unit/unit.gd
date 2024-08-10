@@ -1,4 +1,4 @@
-extends Node2D
+extends RigidBody2D
 
 enum UnitRace {
 	Rat,
@@ -8,3 +8,4 @@ enum UnitRace {
 
 
 @export var race: UnitRace
+
