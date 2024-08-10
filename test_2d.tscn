@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://ywgaelhpgpby"]
+[gd_scene load_steps=8 format=3 uid="uid://ywgaelhpgpby"]
 
 [ext_resource type="Script" path="res://GameManagement/game.gd" id="1_bo2r8"]
 [ext_resource type="Script" path="res://unit/groups.gd" id="1_n6ffw"]
 [ext_resource type="Script" path="res://Camera.gd" id="2_fdhqp"]
+[ext_resource type="FontFile" uid="uid://b7bllu2giivqe" path="res://font/vinque rg.otf" id="4_yc54d"]
 
 [sub_resource type="GDScript" id="GDScript_3igke"]
 script/source = "extends Node
@@ -25,6 +26,18 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-3034, -2411, -2987, 24
 source_geometry_group_name = &"navigation_polygon_source_group"
 cell_size = 10.0
 agent_radius = 30.0
+
+[sub_resource type="Theme" id="Theme_qqolg"]
+Label/fonts/font = ExtResource("4_yc54d")
+TitleLabel/base_type = &"Label"
+TitleLabel/colors/font_color = Color(0.996847, 0.954729, 0.934884, 1)
+TitleLabel/colors/font_outline_color = Color(0.460701, 0.260495, 0.147609, 1)
+TitleLabel/colors/font_shadow_color = Color(0, 0, 0, 0.247059)
+TitleLabel/constants/outline_size = 6
+TitleLabel/constants/shadow_offset_x = 2
+TitleLabel/constants/shadow_offset_y = 2
+TitleLabel/constants/shadow_outline_size = 5
+TitleLabel/font_sizes/font_size = 70
 
 [node name="Node2D" type="Node2D"]
 
@@ -51,3 +64,30 @@ script = ExtResource("1_n6ffw")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("2_fdhqp")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_qqolg")
+
+[node name="Label" type="Label" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 72.0
+offset_top = 61.0
+offset_right = -72.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"TitleLabel"
+text = "Next turn"
+horizontal_alignment = 1
+vertical_alignment = 1
