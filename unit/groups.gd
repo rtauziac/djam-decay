@@ -18,7 +18,7 @@ func make_initial_groups():
 		group_node.engage_combat.connect(Global.game.combat_groups)
 		Global.game.player_changed.connect(func(): for group: SelectableGroup in get_children(): group.selected = false)
 		add_child(group_node)
-		for i_unit in 12:
+		for i_unit in randi_range(5, 9):
 			var unit: Unit = races[i_race].instantiate()
 			unit.global_position = group_node.global_position + Vector2.RIGHT.rotated(randf() * PI * 2) * 20
 			unit.add_to_group(group_node.name)

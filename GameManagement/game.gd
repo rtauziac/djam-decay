@@ -3,7 +3,7 @@ class_name Game
 
 signal player_changed(player: Player)
 
-var stamina_start_amount = 600
+var stamina_start_amount = 60000
 
 var players: Array[Player]
 var current_player: Player
@@ -16,7 +16,7 @@ func _ready():
 
 
 func init_game():
-	var navigation = get_parent().get_node("NavigationRegion2D")
+	var navigation = get_parent().get_node("World/NavigationRegion2D")
 	# generate obstacles randomly
 	var map_size = 3000
 	
@@ -25,7 +25,7 @@ func init_game():
 		var i_spawn = randi_range(0, big_obstacles.size() - 1)
 		var big_obstacle = big_obstacles[i_spawn].instantiate()
 		navigation.add_child(big_obstacle)
-		var distance = ((map_size - 200) * randf()) + 200
+		var distance = ((map_size - 400) * randf()) + 400
 		var angle = i_big_obstacle * (PI / 3)
 		big_obstacle.position = Vector2(cos(angle) * distance, sin(angle) * distance)
 		big_obstacle.rotation = randf() * PI * 2
@@ -36,7 +36,7 @@ func init_game():
 		var i_spawn = randi_range(0, small_obstacles.size() - 1)
 		var small_obstacle = small_obstacles[i_spawn].instantiate()
 		navigation.add_child(small_obstacle)
-		var distance = ((map_size - 200) * randf()) + 200
+		var distance = ((map_size - 300) * randf()) + 300
 		var angle = i_big_obstacle * (PI * 2 / small_count)
 		small_obstacle.position = Vector2(cos(angle) * distance, sin(angle) * distance)
 	

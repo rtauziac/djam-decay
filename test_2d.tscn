@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://ywgaelhpgpby"]
+[gd_scene load_steps=10 format=3 uid="uid://ywgaelhpgpby"]
 
 [ext_resource type="Script" path="res://GameManagement/game.gd" id="1_bo2r8"]
 [ext_resource type="Script" path="res://unit/groups.gd" id="1_n6ffw"]
+[ext_resource type="Texture2D" uid="uid://ddaey10oaamvw" path="res://textures/Map.png" id="2_01prg"]
 [ext_resource type="Script" path="res://ui/camera.gd" id="2_fdhqp"]
+[ext_resource type="Texture2D" uid="uid://cmifkj24c1w02" path="res://textures/Ocean.jpg" id="2_oehxc"]
 [ext_resource type="PackedScene" uid="uid://bffwtwiaeqg1" path="res://ui/ui.tscn" id="4_twutv"]
 
 [sub_resource type="GDScript" id="GDScript_3igke"]
@@ -19,10 +21,18 @@ func _ready():
 
 "
 
+[sub_resource type="GDScript" id="GDScript_y251p"]
+script/source = "extends Sprite2D
+
+
+func _process(delta):
+	rotate(delta * 0.02)
+"
+
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_n13jf"]
 vertices = PackedVector2Array(1338, -3210, 2427, -2545, 3229, -1321, 3549, -27, 3275, 1343, 2496, 2466, 1372, 3234, -10, 3508, -1382, 3222, -2553, 2510, -3284, 1379, -3558, -4, -3238, -1286, -2539, -2454, -1418, -3199, 11, -3519)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-2562, -2476, -3266, -1299, -3589, -6, -3312, 1391, -2574, 2534, -1396, 3250, -11, 3539, 1386, 3262, 2518, 2488, 3303, 1357, 3580, -29, 3257, -1333, 2448, -2569, 1352, -3238, 12, -3550, -1431, -3227)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2562, -2476, -3266, -1299, -3534, -20, -3447, 1190, -2651, 2584, -1431, 3293, -11, 3539, 1386, 3262, 2518, 2488, 3303, 1357, 3580, -29, 3364, -1404, 2656, -2559, 1272, -3474, 117, -3627, -1387, -3267)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 cell_size = 10.0
 agent_radius = 30.0
@@ -38,8 +48,14 @@ script = SubResource("GDScript_3igke")
 
 [node name="RigidBody2D" parent="." instance_placeholder="res://unit/cat.tscn"]
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-navigation_polygon = SubResource("NavigationPolygon_n13jf")
+[node name="Ocean" type="Sprite2D" parent="."]
+scale = Vector2(6.55176, 6.55176)
+texture = ExtResource("2_oehxc")
+script = SubResource("GDScript_y251p")
+
+[node name="Island" type="Sprite2D" parent="."]
+scale = Vector2(3.5752, 3.5752)
+texture = ExtResource("2_01prg")
 
 [node name="Game" type="Node2D" parent="."]
 script = ExtResource("1_bo2r8")
@@ -52,6 +68,9 @@ script = ExtResource("1_n6ffw")
 
 [node name="Camera2D" type="Camera2D" parent="World"]
 script = ExtResource("2_fdhqp")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="World"]
+navigation_polygon = SubResource("NavigationPolygon_n13jf")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(3528, 0)
