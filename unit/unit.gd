@@ -24,7 +24,7 @@ func _physics_process(delta):
 	if walk_stamina > 0:
 		if $NavigationAgent2D.is_target_reachable():
 			if not $NavigationAgent2D.is_target_reached():
-				apply_central_force(($NavigationAgent2D.get_next_path_position() - global_position).normalized() * 600)
+				apply_central_force(($NavigationAgent2D.get_next_path_position() - global_position).normalized() * 100)
 				var move_vector = previous_physics_position - global_position
 				walk_stamina -= pow(move_vector.length() * 0.7, 1.5)
 	if $NavigationAgent2D.is_target_reached():
@@ -55,3 +55,20 @@ func harmonic_function(value: int) -> float:
 	for i in value:
 		sum += 1 / (i + 1)
 	return sum
+
+static func race_advantage(race_a: Race, race_b: Race) -> float:
+	var high_rate = 1.34
+	var low_rate = 1.0
+	if race_a == Race.Rat:
+		match race_b:
+			Race.Dog:
+				return high_rate
+	if race_a == Race.Cat:
+		match race_b:
+			Race.Rat:
+				return high_rate
+	if race_a == Race.Dog:
+		match race_b:
+			Race.Cat:
+				return high_rate
+	return low_rate

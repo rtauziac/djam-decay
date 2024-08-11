@@ -1,10 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://ywgaelhpgpby"]
+[gd_scene load_steps=7 format=3 uid="uid://ywgaelhpgpby"]
 
 [ext_resource type="Script" path="res://GameManagement/game.gd" id="1_bo2r8"]
 [ext_resource type="Script" path="res://unit/groups.gd" id="1_n6ffw"]
-[ext_resource type="Script" path="res://Camera.gd" id="2_fdhqp"]
-[ext_resource type="FontFile" uid="uid://b7bllu2giivqe" path="res://font/vinque rg.otf" id="4_yc54d"]
-[ext_resource type="Script" path="res://MainUI.gd" id="5_0pjp3"]
+[ext_resource type="Script" path="res://ui/camera.gd" id="2_fdhqp"]
+[ext_resource type="PackedScene" uid="uid://bffwtwiaeqg1" path="res://ui/ui.tscn" id="4_twutv"]
 
 [sub_resource type="GDScript" id="GDScript_3igke"]
 script/source = "extends Node
@@ -12,7 +11,7 @@ script/source = "extends Node
 
 func _ready():
 	await get_tree().process_frame
-	print(\"Group count: %d\" % get_parent().get_node(\"Groups\").get_child_count())
+	print(\"Group count: %d\" % get_parent().get_node(\"World/Groups\").get_child_count())
 	await get_tree().process_frame
 	var allUnits = get_tree().get_nodes_in_group(&\"unit\")
 	print(\"Unit count: %d\" % allUnits.size())
@@ -27,18 +26,6 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-3034, -2411, -2987, 24
 source_geometry_group_name = &"navigation_polygon_source_group"
 cell_size = 10.0
 agent_radius = 30.0
-
-[sub_resource type="Theme" id="Theme_qqolg"]
-Label/fonts/font = ExtResource("4_yc54d")
-TitleLabel/base_type = &"Label"
-TitleLabel/colors/font_color = Color(0.996847, 0.954729, 0.934884, 1)
-TitleLabel/colors/font_outline_color = Color(0.460701, 0.260495, 0.147609, 1)
-TitleLabel/colors/font_shadow_color = Color(0, 0, 0, 0.247059)
-TitleLabel/constants/outline_size = 6
-TitleLabel/constants/shadow_offset_x = 2
-TitleLabel/constants/shadow_offset_y = 2
-TitleLabel/constants/shadow_outline_size = 5
-TitleLabel/font_sizes/font_size = 70
 
 [node name="Node2D" type="Node2D"]
 
@@ -57,43 +44,19 @@ polygon = PackedVector2Array(237, 108, 449, 104, 469, -75, 342, -177, 221, -141,
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="NavigationRegion2D/StaticBody2D"]
 polygon = PackedVector2Array(-1240, -317, -1482, -146, -1702, 131, -1656, 421, -1502, 521, -1386, 619, -1160, 646, -1159, 519, -1226, 400, -1326, 402, -1420, 267, -1347, 59, -1262, -109, -1124, -260)
 
-[node name="Game" type="Node" parent="."]
+[node name="Game" type="Node2D" parent="."]
 script = ExtResource("1_bo2r8")
 
-[node name="Groups" type="Node2D" parent="."]
+[node name="World" type="Node2D" parent="."]
+
+[node name="Groups" type="Node2D" parent="World"]
 script = ExtResource("1_n6ffw")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="World"]
 script = ExtResource("2_fdhqp")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="UI" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = SubResource("Theme_qqolg")
-script = ExtResource("5_0pjp3")
+[node name="UI" parent="CanvasLayer" instance=ExtResource("4_twutv")]
 
-[node name="TitleLabel" type="Label" parent="CanvasLayer/UI"]
-visible = false
-modulate = Color(1, 1, 1, 0)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 158.0
-offset_top = 61.0
-offset_right = -158.0
-offset_bottom = -61.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"TitleLabel"
-text = "Next turn"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[connection signal="player_changed" from="Game" to="Groups" method="_on_game_player_changed"]
+[connection signal="player_changed" from="Game" to="World/Groups" method="_on_game_player_changed"]

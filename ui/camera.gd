@@ -2,9 +2,13 @@ extends Camera2D
 
 var moving = false
 var has_moved = false
+@export var controllable = true
 
 
 func _input(event):
+	if not controllable:
+		return
+	
 	if event is InputEventMouseButton:
 		var event_mouse_button: InputEventMouseButton = event
 		

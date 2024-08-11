@@ -14,11 +14,11 @@ script = ExtResource("1_rj8xh")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_fkid3")
 
-[node name="Line2D" type="Line2D" parent="."]
+[node name="SelectionLine2D" type="Line2D" parent="."]
 visible = false
 points = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 closed = true
-width = 2.0
+width = 3.0
 script = ExtResource("1_lmqkd")
 radius = 300
 
@@ -36,4 +36,5 @@ scale = Vector2(0.835, 1)
 texture = ExtResource("3_lba7p")
 offset = Vector2(50, 0)
 
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="input_event" from="." to="." method="_on_input_event"]

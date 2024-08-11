@@ -11,10 +11,12 @@ resource_local_to_scene = true
 radius = 20.0
 
 [node name="RigidBody2D" type="RigidBody2D" groups=["unit"]]
+y_sort_enabled = true
+mass = 0.2
 physics_material_override = SubResource("PhysicsMaterial_y364i")
 can_sleep = false
 lock_rotation = true
-linear_damp = 4.0
+linear_damp = 3.0
 script = ExtResource("1_gui11")
 metadata/_edit_group_ = true
 
@@ -27,7 +29,8 @@ debug_enabled = true
 shape = SubResource("CircleShape2D_gijtc")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+y_sort_enabled = true
 color = Color(0.55, 0.55, 0.55, 1)
-polygon = PackedVector2Array(0, -18, -14, 12, 14, 12)
+polygon = PackedVector2Array(0, -39, -19, 16, 20, 16)
 
 [connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]

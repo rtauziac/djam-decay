@@ -11,9 +11,11 @@ func make_initial_groups():
 	var races: Array = [preload("res://unit/rat.tscn"), preload("res://unit/cat.tscn"), preload("res://unit/dog.tscn")]
 	var race_names: Array = [Unit.Race.keys()[Unit.Race.Rat], Unit.Race.keys()[Unit.Race.Cat], Unit.Race.keys()[Unit.Race.Dog]]
 	for i_race in races.size():
-		var group_node = preload("res://unit/group.tscn").instantiate()
-		group_node.global_position = Vector2.UP.rotated(rand_start_angle + i_race * PI * 0.666) * 100
+		var group_node: SelectableGroup = preload("res://unit/group.tscn").instantiate()
+		group_node.global_position = Vector2.UP.rotated(rand_start_angle + i_race * PI * 0.666) * 250
 		group_node.name = race_names[i_race]
+		group_node.wants_to_be_selected.connect(handle_group_selection)
+		group_node.engage_combat.connect(Global.game.combat_groups)
 		add_child(group_node)
 		for i_unit in 6 * (i_race + 1):
 			var unit: Unit = races[i_race].instantiate()
@@ -76,3 +78,8 @@ func set_process_inputs(active: bool):
 	for group in get_children():
 		group.set_process_input(active)
 		group.set_process_unhandled_input(active)
+
+
+func handle_group_selection(group_wants: SelectableGroup):
+	for group: SelectableGroup in get_children():
+		group.selected = true if group == group_wants else false
