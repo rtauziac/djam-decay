@@ -44,6 +44,24 @@ func hint_group_size(size: int):
 	$NavigationAgent2D.target_desired_distance = 50 * harmonic_function(size) * 2
 
 
+func slash(direction: Vector2):
+	var tween = get_tree().create_tween()
+	$Slash.visible = true
+	$Slash.rotation = direction.angle()
+	$Slash.self_modulate = Color.WHITE
+	tween.tween_property($Slash, "self_modulate", Color.TRANSPARENT, 0.2)
+	tween.tween_callback(func(): $Slash.visible = false)
+
+
+func blood(direction: Vector2):
+	var tween = get_tree().create_tween()
+	$Blood.visible = true
+	$Blood.rotation = direction.angle()
+	$Blood.self_modulate = Color.WHITE	
+	tween.tween_property($Blood, "self_modulate", Color.TRANSPARENT, 0.8)
+	tween.tween_callback(func(): $Blood.visible = false; queue_free())
+
+
 func set_walk_stamina(stamina: float):
 	walk_stamina = stamina
 

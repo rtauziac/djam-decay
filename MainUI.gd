@@ -40,6 +40,6 @@ func hide_header():
 			process_tween.kill()
 	var tween = get_tree().create_tween()
 	tween.set_meta("tween", "header")
-	tween.tween_property($HeaderLabel, "modulate", Color.WHITE, 0.4)
-	tween.tween_callback(func(): $HeaderLabel.visible = true)
+	tween.tween_property($HeaderLabel, "modulate", Color.TRANSPARENT, 0.4)
+	tween.tween_callback(func(): $HeaderLabel.visible = false)
 

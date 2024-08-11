@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://d0ba2gtndkttu"]
+[gd_scene load_steps=6 format=3 uid="uid://d0ba2gtndkttu"]
 
 [ext_resource type="Script" path="res://unit/unit.gd" id="1_gui11"]
+[ext_resource type="Texture2D" uid="uid://ghrexsfaos5p" path="res://textures/slash.png" id="2_fjqd3"]
+[ext_resource type="Texture2D" uid="uid://dmr5ybsvwrg1i" path="res://textures/blood01.png" id="3_pyj0c"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_y364i"]
 friction = 0.0
@@ -32,5 +34,17 @@ shape = SubResource("CircleShape2D_gijtc")
 y_sort_enabled = true
 color = Color(0.55, 0.55, 0.55, 1)
 polygon = PackedVector2Array(0, -39, -19, 16, 20, 16)
+
+[node name="Slash" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_fjqd3")
+offset = Vector2(129.55, 0)
+
+[node name="Blood" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.273438, 0.273438)
+texture = ExtResource("3_pyj0c")
+offset = Vector2(92, 0)
 
 [connection signal="velocity_computed" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_velocity_computed"]

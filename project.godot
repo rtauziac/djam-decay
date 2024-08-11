@@ -24,6 +24,10 @@ Global="*res://autoload/global.gd"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[navigation]
+
+2d/default_cell_size=10.0
+
 [physics]
 
 common/physics_ticks_per_second=120

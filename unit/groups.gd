@@ -17,7 +17,7 @@ func make_initial_groups():
 		group_node.wants_to_be_selected.connect(handle_group_selection)
 		group_node.engage_combat.connect(Global.game.combat_groups)
 		add_child(group_node)
-		for i_unit in 6 * (i_race + 1):
+		for i_unit in 12:
 			var unit: Unit = races[i_race].instantiate()
 			unit.global_position = group_node.global_position + Vector2.RIGHT.rotated(randf() * PI * 2) * 20
 			unit.add_to_group(group_node.name)
@@ -45,7 +45,7 @@ func _physics_process(delta):
 				longest_distance = unit_distance
 		group.stamina = real_stamina / total_stamina
 		group.global_position = bounds_new.get_center()
-		var selectable_group := group.find_child("CollisionShape2D") as SelectableGroup
+		#var selectable_group := group.find_child("CollisionShape2D") as SelectableGroup
 		group.radius = longest_distance
 
 

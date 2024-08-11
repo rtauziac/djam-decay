@@ -1,12 +1,23 @@
 extends Camera2D
+class_name GameCamera
 
 var moving = false
 var has_moved = false
-@export var controllable = true
+var controllable = true
+var focus_target = null #Vector2
+
+
+func _ready():
+	Global.main_camera = self
+
+
+func _process(delta):
+	if focus_target != null:
+		global_position = lerp(global_position, focus_target, min(1, delta * 4))
 
 
 func _input(event):
-	if not controllable:
+	if not controllable or focus_target != null:
 		return
 	
 	if event is InputEventMouseButton:
