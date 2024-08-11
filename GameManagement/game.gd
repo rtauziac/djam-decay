@@ -69,10 +69,10 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	var group_b_count = group_b_nodes.size()
 	var group_a_race = group_a_nodes[0].race
 	var group_b_race = group_b_nodes[0].race
-	print("%s has %d units" % [group_a.name, group_a_count])
-	print("%s has %d units" % [group_b.name, group_b_count])
+	#print("%s has %d units" % [group_a.name, group_a_count])
+	#print("%s has %d units" % [group_b.name, group_b_count])
 	var group_a_hit = (group_a_count * Unit.race_advantage(group_a_race, group_b_race)) / 2
-	print("%s kills %d units from %s" % [group_a.name, group_a_hit, group_b.name])
+	#print("%s kills %d units from %s" % [group_a.name, group_a_hit, group_b.name])
 	Global.main_camera.focus_target = lerp(group_a.global_position, group_b.global_position, 0.5)
 	await get_tree().create_timer(1.2).timeout
 	
@@ -97,9 +97,9 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	if not group_b_dead:
 		group_b_nodes = get_tree().get_nodes_in_group(group_b.name)
 		group_b_count = group_b_nodes.size()
-		print("%s has now %d units" % [group_b.name, group_b_count])
+		#print("%s has now %d units" % [group_b.name, group_b_count])
 		var group_b_hit = (group_b_count * Unit.race_advantage(group_b_race, group_a_race)) / 2
-		print("%s kills %d units from %s" % [group_b.name, group_b_hit, group_a.name])
+		#print("%s kills %d units from %s" % [group_b.name, group_b_hit, group_a.name])
 		
 		for unit: Unit in group_b_nodes:
 			unit.slash(-attack_direction)
@@ -116,7 +116,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 		
 		if get_tree().get_first_node_in_group(group_a.name) == null:
 			group_a.queue_free()
-			
+		
 	get_tree().call_group(group_a.name, "go_to_position", group_a.global_position) # stop the walk
 	get_tree().call_group("unit", "set_physics_process", true)
 	Global.main_camera.focus_target = null

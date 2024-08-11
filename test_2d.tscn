@@ -20,14 +20,18 @@ func _ready():
 "
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_n13jf"]
-vertices = PackedVector2Array(349, -210, 181, -160, -1075, -269, -1243, -352, -3003, -2380, 2438, -2374, 501, -88, 2468, 2443, 476, 133, -2957, 2382, 224, 138, 100, -4, -1130, 680, -1310, 371, -1386, 261, -1320, 73, -1235, -93, 225, -51, -1209, 370, -1503, -168, -1734, 123, -1684, 439, -1521, 544, -1398, 648, -1129, 511)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(6, 5, 7, 8), PackedInt32Array(8, 7, 9, 10), PackedInt32Array(11, 10, 9, 12), PackedInt32Array(13, 14, 15, 16, 2, 1, 17, 11, 18), PackedInt32Array(5, 6, 0), PackedInt32Array(4, 3, 19), PackedInt32Array(4, 19, 20), PackedInt32Array(9, 4, 20, 21), PackedInt32Array(9, 21, 22, 23), PackedInt32Array(24, 18, 11), PackedInt32Array(12, 24, 11), PackedInt32Array(9, 23, 12)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-3034, -2411, -2987, 2412, 2499, 2474, 2468, -2404)])
+vertices = PackedVector2Array(-1733, -3104, -295, -3425, 1319, -3091, 349, -210, 181, -160, -1075, -269, -1243, -352, -3013, -2388, 476, 133, 501, -88, 2445, -2382, 3321, -1080, 3613, 114, 3405, 1501, 2649, 2513, 1227, 3388, -3858, -1408, -1503, -168, -4102, -20, -1734, 123, -3819, 1462, -3137, 2556, -1684, 439, -1843, 3394, 224, 138, -255, 3543, -1130, 680, -1129, 511, -1521, 544, -1398, 648, -1235, -93, 100, -4, -1209, 370, -1320, 73, 225, -51, -1386, 261, -1310, 371)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5, 6, 7), PackedInt32Array(8, 9, 2, 10, 11, 12, 13, 14, 15), PackedInt32Array(2, 9, 3), PackedInt32Array(16, 7, 6, 17, 18), PackedInt32Array(18, 17, 19, 20), PackedInt32Array(21, 20, 19, 22, 23), PackedInt32Array(24, 8, 15, 25, 26, 27), PackedInt32Array(23, 22, 28, 29, 25), PackedInt32Array(25, 29, 26), PackedInt32Array(30, 5, 31, 24, 27, 32, 33), PackedInt32Array(4, 34, 31, 5), PackedInt32Array(35, 33, 32, 36)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-3034, -2411, -3887, -1422, -4133, -23, -3848, 1474, -3159, 2578, -1853, 3424, -255, 3574, 1238, 3418, 2669, 2537, 3434, 1513, 3644, 114, 3349, -1094, 2468, -2404, 1331, -3119, -296, -3456, -1745, -3133)])
 source_geometry_group_name = &"navigation_polygon_source_group"
 cell_size = 10.0
 agent_radius = 30.0
 
 [node name="Node2D" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("4_twutv")]
 
 [node name="Test" type="Node" parent="."]
 script = SubResource("GDScript_3igke")
@@ -48,15 +52,12 @@ polygon = PackedVector2Array(-1240, -317, -1482, -146, -1702, 131, -1656, 421, -
 script = ExtResource("1_bo2r8")
 
 [node name="World" type="Node2D" parent="."]
+y_sort_enabled = true
 
 [node name="Groups" type="Node2D" parent="World"]
 script = ExtResource("1_n6ffw")
 
 [node name="Camera2D" type="Camera2D" parent="World"]
 script = ExtResource("2_fdhqp")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="UI" parent="CanvasLayer" instance=ExtResource("4_twutv")]
 
 [connection signal="player_changed" from="Game" to="World/Groups" method="_on_game_player_changed"]

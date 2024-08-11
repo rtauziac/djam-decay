@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bf3b7yr6rdr18"]
+[gd_scene load_steps=4 format=3 uid="uid://bf3b7yr6rdr18"]
 
 [ext_resource type="PackedScene" uid="uid://d0ba2gtndkttu" path="res://unit/unit.tscn" id="1_x1yr3"]
+[ext_resource type="Texture2D" uid="uid://carr7ij2iloq4" path="res://textures/Dog.png" id="2_knwdn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_efu2m"]
 resource_local_to_scene = true
@@ -9,8 +10,14 @@ radius = 20.0
 [node name="RigidBody2D" instance=ExtResource("1_x1yr3")]
 race = 2
 
-[node name="CollisionShape2D" parent="." index="0"]
+[node name="CollisionShape2D" parent="." index="1"]
 shape = SubResource("CircleShape2D_efu2m")
 
-[node name="Polygon2D" parent="." index="1"]
-color = Color(0.433617, 0.667729, 0.415898, 1)
+[node name="Body" parent="Node2D" index="0"]
+texture = ExtResource("2_knwdn")
+
+[node name="Angry" parent="Node2D" index="2"]
+position = Vector2(2, -68.3453)
+
+[node name="Dead" parent="Node2D" index="3"]
+position = Vector2(2, -68.3453)

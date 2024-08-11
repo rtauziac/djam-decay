@@ -5,6 +5,7 @@ class_name MainUI
 func _ready():
 	Global.main_ui = self
 	$TitleLabel.visible = false
+	$TitleLabel.modulate = Color.TRANSPARENT
 
 
 func show_title(title: String, callback = null):
@@ -24,22 +25,10 @@ func show_title(title: String, callback = null):
 
 
 func show_header(header: String):
-	for process_tween in get_tree().get_processed_tweens():
-		if process_tween.get_meta("tween") == "header":
-			process_tween.kill()
-	var tween = get_tree().create_tween()
-	tween.set_meta("tween", "header")
 	$HeaderLabel.text = header
-	tween.tween_callback(func(): $HeaderLabel.visible = true)
-	tween.tween_property($HeaderLabel, "modulate", Color.WHITE, 0.4)
+	$AnimationPlayer.play("header_appear")
 
 
 func hide_header():
-	for process_tween in get_tree().get_processed_tweens():
-		if process_tween.get_meta("tween") == "header":
-			process_tween.kill()
-	var tween = get_tree().create_tween()
-	tween.set_meta("tween", "header")
-	tween.tween_property($HeaderLabel, "modulate", Color.TRANSPARENT, 0.4)
-	tween.tween_callback(func(): $HeaderLabel.visible = false)
+	$AnimationPlayer.play("header_hide")
 

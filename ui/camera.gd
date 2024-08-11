@@ -16,7 +16,7 @@ func _process(delta):
 		global_position = lerp(global_position, focus_target, min(1, delta * 4))
 
 
-func _input(event):
+func _unhandled_input(event):
 	if not controllable or focus_target != null:
 		return
 	

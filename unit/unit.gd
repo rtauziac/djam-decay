@@ -51,15 +51,19 @@ func slash(direction: Vector2):
 	$Slash.self_modulate = Color.WHITE
 	tween.tween_property($Slash, "self_modulate", Color.TRANSPARENT, 0.2)
 	tween.tween_callback(func(): $Slash.visible = false)
+	$AnimationPlayer.play("hit")
 
 
 func blood(direction: Vector2):
 	var tween = get_tree().create_tween()
 	$Blood.visible = true
 	$Blood.rotation = direction.angle()
-	$Blood.self_modulate = Color.WHITE	
+	$Blood.self_modulate = Color.WHITE
+	$Node2D/Eyes.visible = false
+	$Node2D/Dead.visible = true
 	tween.tween_property($Blood, "self_modulate", Color.TRANSPARENT, 0.8)
 	tween.tween_callback(func(): $Blood.visible = false; queue_free())
+	$AnimationPlayer.play("hit")
 
 
 func set_walk_stamina(stamina: float):

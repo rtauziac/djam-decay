@@ -8,8 +8,5 @@ radius = 20.0
 
 [node name="RigidBody2D" instance=ExtResource("1_qo00k")]
 
-[node name="CollisionShape2D" parent="." index="0"]
+[node name="CollisionShape2D" parent="." index="1"]
 shape = SubResource("CircleShape2D_q1als")
-
-[node name="Polygon2D" parent="." index="1"]
-color = Color(0.901476, 0.28669, 0.324367, 1)
