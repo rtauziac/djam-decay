@@ -16,6 +16,32 @@ func _ready():
 
 
 func init_game():
+	var navigation = get_parent().get_node("NavigationRegion2D")
+	# generate obstacles randomly
+	var map_size = 3000
+	
+	var big_obstacles = [preload("res://map/obstacles/rock.tscn"), preload("res://map/obstacles/tower.tscn")]
+	for i_big_obstacle in 6:
+		var i_spawn = randi_range(0, big_obstacles.size() - 1)
+		var big_obstacle = big_obstacles[i_spawn].instantiate()
+		navigation.add_child(big_obstacle)
+		var distance = ((map_size - 200) * randf()) + 200
+		var angle = i_big_obstacle * (PI / 3)
+		big_obstacle.position = Vector2(cos(angle) * distance, sin(angle) * distance)
+		big_obstacle.rotation = randf() * PI * 2
+	
+	var small_obstacles = [preload("res://map/obstacles/tree_1.tscn"), preload("res://map/obstacles/tree_2.tscn"), preload("res://map/obstacles/tree_3.tscn"), preload("res://map/obstacles/bush_1.tscn"), preload("res://map/obstacles/bush_2.tscn"), preload("res://map/obstacles/souche.tscn"), preload("res://map/obstacles/well.tscn")]
+	var small_count = 120
+	for i_big_obstacle in small_count:
+		var i_spawn = randi_range(0, small_obstacles.size() - 1)
+		var small_obstacle = small_obstacles[i_spawn].instantiate()
+		navigation.add_child(small_obstacle)
+		var distance = ((map_size - 200) * randf()) + 200
+		var angle = i_big_obstacle * (PI * 2 / small_count)
+		small_obstacle.position = Vector2(cos(angle) * distance, sin(angle) * distance)
+	
+	navigation.bake_navigation_polygon(false)
+	
 	var rat_player = Player.new()
 	rat_player.race = Unit.Race.Rat
 	rat_player.user_controlled = Global.player_1_selected_faction == Unit.Race.Rat
@@ -47,6 +73,12 @@ func init_game():
 		#)
 	change_player(current_player)
 	Global.main_ui.show_title("%s team" % Unit.Race.keys()[user_player.race])
+
+
+func skip_turn():
+	var player_index = players.find(current_player)
+	var next_player_index = (player_index + 1) % players.size()
+	change_player(players[next_player_index])
 
 
 func change_player(player: Player):

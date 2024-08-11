@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4aodwwkjoxen"]
+
+[ext_resource type="PackedScene" uid="uid://fb4hrwgtat2n" path="res://map/obstacles/tree_1.tscn" id="1_f1kd3"]
+
+[node name="Bush2" instance=ExtResource("1_f1kd3")]
+
+[node name="Sprite2D" parent="." index="0"]
+offset = Vector2(0, -18.565)
+region_rect = Rect2(77, 102, 42, 51.46)

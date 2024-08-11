@@ -32,3 +32,6 @@ func show_header(header: String):
 func hide_header():
 	$AnimationPlayer.play("header_hide")
 
+
+func _on_button_next_turn_pressed():
+	Global.game.skip_turn()

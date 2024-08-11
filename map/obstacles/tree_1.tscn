@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://fb4hrwgtat2n"]
+
+[ext_resource type="Texture2D" uid="uid://cyhn8puy6ja2g" path="res://textures/atlas/Obstacles2.png" id="1_u8lva"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0jv6p"]
+
+[node name="Tree1" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.31, 1.31)
+texture = ExtResource("1_u8lva")
+offset = Vector2(0, -32)
+region_enabled = true
+region_rect = Rect2(9, 9, 42, 82)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 0.785397
+shape = SubResource("RectangleShape2D_0jv6p")

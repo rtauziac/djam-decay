@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbyhb26smkvf3"]
+
+[ext_resource type="PackedScene" uid="uid://fb4hrwgtat2n" path="res://map/obstacles/tree_1.tscn" id="1_j206g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v4d4s"]
+size = Vector2(61.48, 61.5173)
+
+[node name="Tree1" instance=ExtResource("1_j206g")]
+
+[node name="Sprite2D" parent="." index="0"]
+offset = Vector2(0, 0.35)
+region_rect = Rect2(150, 96, 71, 63)
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0.0139214, 0.513186)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_v4d4s")

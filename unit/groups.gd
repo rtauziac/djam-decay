@@ -16,6 +16,7 @@ func make_initial_groups():
 		group_node.name = race_names[i_race]
 		group_node.wants_to_be_selected.connect(handle_group_selection)
 		group_node.engage_combat.connect(Global.game.combat_groups)
+		Global.game.player_changed.connect(func(): for group: SelectableGroup in get_children(): group.selected = false)
 		add_child(group_node)
 		for i_unit in 12:
 			var unit: Unit = races[i_race].instantiate()

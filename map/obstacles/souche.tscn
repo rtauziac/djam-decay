@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctitxx0mhpvvq"]
+
+[ext_resource type="PackedScene" uid="uid://fb4hrwgtat2n" path="res://map/obstacles/tree_1.tscn" id="1_0f33n"]
+
+[node name="Souche" instance=ExtResource("1_0f33n")]
+
+[node name="Sprite2D" parent="." index="0"]
+offset = Vector2(0, -1.375)
+region_rect = Rect2(16, 121, 51, 40)
