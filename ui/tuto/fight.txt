@@ -1,0 +1,6 @@
+The battle unfolds automatically. The one whose turn it is attacks first.
+At the end of the battle, groups lose more or fewer individuals depending on the faction of the opposing group.
+
+Rat > Dog
+Dog > Cat
+Cat > Rat

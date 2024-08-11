@@ -18,20 +18,26 @@ func _ready():
 func init_game():
 	var rat_player = Player.new()
 	rat_player.race = Unit.Race.Rat
-	rat_player.user_controlled = true
+	rat_player.user_controlled = Global.player_1_selected_faction == Unit.Race.Rat
 	players.append(rat_player)
+	
+	var user_player: Player = rat_player
 	
 	var cat_player = Player.new()
 	cat_player.race = Unit.Race.Cat
-	cat_player.user_controlled = false
+	cat_player.user_controlled = Global.player_1_selected_faction == Unit.Race.Cat
 	players.append(cat_player)
+	
+	if cat_player.user_controlled: user_player = cat_player
 	
 	var dog_player = Player.new()
 	dog_player.race = Unit.Race.Dog
-	dog_player.user_controlled = false
+	dog_player.user_controlled = Global.player_1_selected_faction == Unit.Race.Dog
 	players.append(dog_player)
 	
-	#current_player = rat_player
+	if dog_player.user_controlled: user_player = cat_player
+	
+	current_player = user_player
 	
 	await get_tree().create_timer(1).timeout
 	
@@ -39,8 +45,8 @@ func init_game():
 		#change_player(rat_player)
 		#Global.main_ui.show_title("Rat team")
 		#)
-	change_player(rat_player)
-	Global.main_ui.show_title("Rat team")
+	change_player(current_player)
+	Global.main_ui.show_title("%s team" % Unit.Race.keys()[user_player.race])
 
 
 func change_player(player: Player):
@@ -60,7 +66,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	var combat_list = combats_made_during_turn[group_a.name]
 	combat_list.append(group_b.name)
 	
-	Global.main_ui.show_header("Combat")
+	Global.main_ui.show_header("Fight!")
 	get_tree().call_group("unit", "set_physics_process", false)
 	var group_a_nodes = get_tree().get_nodes_in_group(group_a.name)
 	var group_b_nodes = get_tree().get_nodes_in_group(group_b.name)
@@ -69,11 +75,8 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	var group_b_count = group_b_nodes.size()
 	var group_a_race = group_a_nodes[0].race
 	var group_b_race = group_b_nodes[0].race
-	#print("%s has %d units" % [group_a.name, group_a_count])
-	#print("%s has %d units" % [group_b.name, group_b_count])
 	var group_a_hit = (group_a_count * Unit.race_advantage(group_a_race, group_b_race)) / 2
-	#print("%s kills %d units from %s" % [group_a.name, group_a_hit, group_b.name])
-	Global.main_camera.focus_target = lerp(group_a.global_position, group_b.global_position, 0.5)
+	Global.main_camera.focus_target = group_b
 	await get_tree().create_timer(1.2).timeout
 	
 	var attack_direction := group_b.global_position - group_a.global_position
@@ -97,9 +100,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	if not group_b_dead:
 		group_b_nodes = get_tree().get_nodes_in_group(group_b.name)
 		group_b_count = group_b_nodes.size()
-		#print("%s has now %d units" % [group_b.name, group_b_count])
 		var group_b_hit = (group_b_count * Unit.race_advantage(group_b_race, group_a_race)) / 2
-		#print("%s kills %d units from %s" % [group_b.name, group_b_hit, group_a.name])
 		
 		for unit: Unit in group_b_nodes:
 			unit.slash(-attack_direction)
@@ -121,4 +122,3 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	get_tree().call_group("unit", "set_physics_process", true)
 	Global.main_camera.focus_target = null
 	Global.main_ui.hide_header()
-	

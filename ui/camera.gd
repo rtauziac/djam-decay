@@ -4,7 +4,7 @@ class_name GameCamera
 var moving = false
 var has_moved = false
 var controllable = true
-var focus_target = null #Vector2
+var focus_target = null #Node2D
 
 
 func _ready():
@@ -13,13 +13,10 @@ func _ready():
 
 func _process(delta):
 	if focus_target != null:
-		global_position = lerp(global_position, focus_target, min(1, delta * 4))
+		global_position = lerp(global_position, focus_target.global_position, min(1, delta * 4))
 
 
 func _unhandled_input(event):
-	if not controllable or focus_target != null:
-		return
-	
 	if event is InputEventMouseButton:
 		var event_mouse_button: InputEventMouseButton = event
 		
@@ -41,6 +38,8 @@ func _unhandled_input(event):
 	
 	if event is InputEventMouseMotion:
 		var event_mouse_motion: InputEventMouseMotion = event
+		if not controllable or focus_target != null:
+			return
 		
 		if moving:
 			translate(-event_mouse_motion.relative / zoom)

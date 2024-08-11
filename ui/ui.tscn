@@ -1,7 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bffwtwiaeqg1"]
+[gd_scene load_steps=17 format=3 uid="uid://bffwtwiaeqg1"]
 
 [ext_resource type="Theme" uid="uid://cxd3ej5f26fs7" path="res://ui/game_theme.tres" id="1_qyre8"]
-[ext_resource type="Script" path="res://MainUI.gd" id="2_neumv"]
+[ext_resource type="Script" path="res://main_ui.gd" id="2_6rubd"]
+[ext_resource type="Texture2D" uid="uid://crkymqtmk0h1q" path="res://textures/arrow_right.png" id="3_5rs2d"]
+[ext_resource type="Texture2D" uid="uid://dbckcirc0ij4a" path="res://ui/vignette.png" id="3_pmuin"]
+[ext_resource type="Script" path="res://ui/PanelTuto.gd" id="4_wdb4x"]
+[ext_resource type="Texture2D" uid="uid://b85bckt58lrrg" path="res://textures/arrow_left.png" id="5_86fft"]
 
 [sub_resource type="Animation" id="Animation_aor1l"]
 resource_name = "header_appear"
@@ -57,6 +61,77 @@ _data = {
 "header_hide": SubResource("Animation_6lbuw")
 }
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ud0py"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+
+[sub_resource type="GDScript" id="GDScript_03hc6"]
+script/source = "extends Button
+
+var collapsed = true
+
+
+func _on_pressed():
+	get_parent().get_node(\"AnimationPlayer\").play(\"open\" if collapsed else \"close\")
+	collapsed = not collapsed
+"
+
+[sub_resource type="Animation" id="Animation_3a3km"]
+resource_name = "open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-393, 103), Vector2(4, 103)]
+}
+
+[sub_resource type="Animation" id="Animation_ldybh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-393, 103)]
+}
+
+[sub_resource type="Animation" id="Animation_45rks"]
+resource_name = "close"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = false
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(4, 103), Vector2(-393, 103)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kbpny"]
+_data = {
+"RESET": SubResource("Animation_ldybh"),
+"close": SubResource("Animation_45rks"),
+"open": SubResource("Animation_3a3km")
+}
+
 [node name="UI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -66,7 +141,22 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 theme = ExtResource("1_qyre8")
-script = ExtResource("2_neumv")
+script = ExtResource("2_6rubd")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.443137)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_pmuin")
 
 [node name="TitleLabel" type="Label" parent="."]
 layout_mode = 1
@@ -90,7 +180,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_left = 90.0
 offset_top = -138.0
-offset_right = -90.0
+offset_right = 2214.0
 offset_bottom = -27.0
 grow_horizontal = 2
 theme_type_variation = &"TitleLabel"
@@ -98,29 +188,49 @@ text = "Fight!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="PlayerTurnControl" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -176.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+
+[node name="TeamLabel" type="Label" parent="PlayerTurnControl"]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -40.0
-offset_right = 40.0
+offset_left = 4.0
+offset_top = -86.0
+offset_right = 80.0
+offset_bottom = -66.0
+grow_vertical = 0
+text = "Rat Team"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayerTurnControl"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -63.0
+offset_right = 53.0
+offset_bottom = -3.0
 grow_vertical = 0
 
-[node name="Button" type="Button" parent="HBoxContainer"]
-custom_minimum_size = Vector2(45, 45)
-layout_mode = 2
-text = "1"
-
-[node name="ButtonNextTurn" type="Button" parent="."]
+[node name="ButtonNextTurn" type="Button" parent="PlayerTurnControl"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -8.0
-offset_top = -8.0
+offset_left = -119.0
+offset_top = -60.0
 grow_horizontal = 0
 grow_vertical = 0
 text = "Next turn"
@@ -129,3 +239,108 @@ text = "Next turn"
 libraries = {
 "": SubResource("AnimationLibrary_i50fl")
 }
+
+[node name="PanelContainer" type="Panel" parent="."]
+custom_minimum_size = Vector2(421, 429)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -393.0
+offset_top = 103.0
+offset_right = 28.0
+offset_bottom = -116.0
+grow_vertical = 2
+script = ExtResource("4_wdb4x")
+
+[node name="Control" type="Control" parent="PanelContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 21.0
+offset_top = 13.0
+offset_right = -21.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LabelHeader" type="Label" parent="PanelContainer/Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 62.0
+offset_top = 2.0
+offset_right = -62.0
+offset_bottom = 41.0
+grow_horizontal = 2
+theme_type_variation = &"SmallHeaderLabel"
+text = "Test"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/Control/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Left" type="Button" parent="PanelContainer/Control/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ud0py")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ud0py")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ud0py")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ud0py")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ud0py")
+icon = ExtResource("5_86fft")
+
+[node name="Spacing" type="Control" parent="PanelContainer/Control/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Right" type="Button" parent="PanelContainer/Control/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ud0py")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_ud0py")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ud0py")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ud0py")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ud0py")
+icon = ExtResource("3_5rs2d")
+
+[node name="ButtonCollapse" type="Button" parent="PanelContainer"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -29.0
+offset_top = -35.0
+offset_right = 35.0
+offset_bottom = 35.0
+grow_horizontal = 0
+grow_vertical = 2
+icon = ExtResource("3_5rs2d")
+script = SubResource("GDScript_03hc6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PanelContainer"]
+libraries = {
+"": SubResource("AnimationLibrary_kbpny")
+}
+
+[connection signal="pressed" from="PanelContainer/Control/VBoxContainer/HBoxContainer/Left" to="PanelContainer" method="previous_page"]
+[connection signal="pressed" from="PanelContainer/Control/VBoxContainer/HBoxContainer/Right" to="PanelContainer" method="next_page"]
+[connection signal="pressed" from="PanelContainer/ButtonCollapse" to="PanelContainer/ButtonCollapse" method="_on_pressed"]

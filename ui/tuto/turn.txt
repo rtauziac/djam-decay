@@ -1,0 +1,3 @@
+This game is played turn by turn.
+During your turn, you must explore the map in search of resources, which will allow you to expand your groups.
+If your group encounters a group from an opposing tribe, a battle ensues.

@@ -12,7 +12,7 @@ func make_initial_groups():
 	var race_names: Array = [Unit.Race.keys()[Unit.Race.Rat], Unit.Race.keys()[Unit.Race.Cat], Unit.Race.keys()[Unit.Race.Dog]]
 	for i_race in races.size():
 		var group_node: SelectableGroup = preload("res://unit/group.tscn").instantiate()
-		group_node.global_position = Vector2.UP.rotated(rand_start_angle + i_race * PI * 0.666) * 250
+		group_node.global_position = Vector2.UP.rotated(rand_start_angle + i_race * PI * 0.667) * 250
 		group_node.name = race_names[i_race]
 		group_node.wants_to_be_selected.connect(handle_group_selection)
 		group_node.engage_combat.connect(Global.game.combat_groups)
