@@ -1,6 +1,6 @@
 extends Panel
 
-var content_titles = ["instructions", "controls", "turn", "fight"]
+var content_titles = ["instructions", "controls", "turn", "fight", "interface"]
 var contents = Array()
 var content_index = 0
 

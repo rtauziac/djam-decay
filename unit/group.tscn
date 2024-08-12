@@ -36,5 +36,9 @@ scale = Vector2(0.835, 1)
 texture = ExtResource("3_lba7p")
 offset = Vector2(50, 0)
 
+[node name="CheckSpeedTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="input_event" from="." to="." method="_on_input_event"]

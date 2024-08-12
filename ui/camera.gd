@@ -5,10 +5,24 @@ var moving = false
 var has_moved = false
 var controllable = true
 var focus_target = null #Node2D
+func get_focus_target():
+	return focus_target
+func set_focus_target(new_val):
+	focus_target = new_val
+	controllable = new_val == null
+	moving = new_val == null
 
 
 func _ready():
 	Global.main_camera = self
+
+
+func move_to_position(position: Vector2):
+	controllable = false
+	moving = false
+	var tween = get_tree().create_tween()
+	tween.tween_property(self, "global_position", position, clamp((global_position - position).length() / 1000, 0.3, 1.2)).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	tween.tween_callback(func(): controllable = true)
 
 
 func _process(delta):

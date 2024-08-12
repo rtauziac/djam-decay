@@ -1,0 +1,3 @@
+Your selected group appears circled in white.
+A green gauge representing the stamina shows at the top of your selected group.
+Use the buttons at the bottom to quickly switch to another group.

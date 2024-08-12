@@ -3,11 +3,12 @@ class_name Game
 
 signal player_changed(player: Player)
 
-var stamina_start_amount = 60000
+var stamina_start_amount = 500
 
 var players: Array[Player]
 var current_player: Player
 var combats_made_during_turn := Dictionary()
+var is_in_combat = false
 
 
 func _ready():
@@ -30,8 +31,8 @@ func init_game():
 		big_obstacle.position = Vector2(cos(angle) * distance, sin(angle) * distance)
 		big_obstacle.rotation = randf() * PI * 2
 	
-	var small_obstacles = [preload("res://map/obstacles/tree_1.tscn"), preload("res://map/obstacles/tree_2.tscn"), preload("res://map/obstacles/tree_3.tscn"), preload("res://map/obstacles/bush_1.tscn"), preload("res://map/obstacles/bush_2.tscn"), preload("res://map/obstacles/souche.tscn"), preload("res://map/obstacles/well.tscn")]
-	var small_count = 120
+	var small_obstacles = [preload("res://map/obstacles/tree_1.tscn"), preload("res://map/obstacles/tree_2.tscn"), preload("res://map/obstacles/tree_3.tscn"), preload("res://map/obstacles/bush_1.tscn"), preload("res://map/obstacles/bush_2.tscn"), preload("res://map/obstacles/souche.tscn")]
+	var small_count = 180
 	for i_big_obstacle in small_count:
 		var i_spawn = randi_range(0, small_obstacles.size() - 1)
 		var small_obstacle = small_obstacles[i_spawn].instantiate()
@@ -67,13 +68,9 @@ func init_game():
 	
 	await get_tree().create_timer(1).timeout
 	
-	#Global.main_ui.show_title("Start game", func():
-		#change_player(rat_player)
-		#Global.main_ui.show_title("Rat team")
-		#)
-	change_player(current_player)
-	Global.main_ui.show_title("%s team" % Unit.Race.keys()[user_player.race])
-
+	Global.main_ui.show_title("Prepare…", func():
+		change_player(current_player)
+	)
 
 func skip_turn():
 	var player_index = players.find(current_player)
@@ -94,22 +91,30 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 			return
 	else:
 		combats_made_during_turn[group_a.name] = Array()
+		
+	var group_a_nodes = get_tree().get_nodes_in_group(group_a.name)
+	var group_b_nodes = get_tree().get_nodes_in_group(group_b.name)
+	var group_a_race = group_a_nodes[0].race
+	var group_b_race = group_b_nodes[0].race
+	if group_a_race == group_b_race:
+		return
+	
+	if is_in_combat:
+		return
+	
+	is_in_combat = true
 	
 	var combat_list = combats_made_during_turn[group_a.name]
 	combat_list.append(group_b.name)
 	
 	Global.main_ui.show_header("Fight!")
 	get_tree().call_group("unit", "set_physics_process", false)
-	var group_a_nodes = get_tree().get_nodes_in_group(group_a.name)
-	var group_b_nodes = get_tree().get_nodes_in_group(group_b.name)
 	
 	var group_a_count = group_a_nodes.size()
 	var group_b_count = group_b_nodes.size()
-	var group_a_race = group_a_nodes[0].race
-	var group_b_race = group_b_nodes[0].race
 	var group_a_hit = (group_a_count * Unit.race_advantage(group_a_race, group_b_race)) / 2
-	Global.main_camera.focus_target = group_b
-	await get_tree().create_timer(1.2).timeout
+	Global.main_camera.move_to_position(group_b.global_position)
+	await get_tree().create_timer(1.1).timeout
 	
 	var attack_direction := group_b.global_position - group_a.global_position
 	for unit: Unit in group_a_nodes:
@@ -118,7 +123,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	
 	await get_tree().create_timer(0.6).timeout
 	
-	for i_hit in group_a_hit:
+	for i_hit in min(group_a_hit, group_b_nodes.size()):
 		var unit: Unit = group_b_nodes[i_hit]
 		unit.blood(attack_direction)
 		await get_tree().create_timer(0.1).timeout
@@ -140,6 +145,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 		
 		await get_tree().create_timer(0.6).timeout
 		
+		group_a_nodes = get_tree().get_nodes_in_group(group_a.name)
 		for i_hit in min(group_b_hit, group_a_nodes.size()):
 			var unit: Unit = group_a_nodes[i_hit]
 			unit.blood(-attack_direction)
@@ -152,5 +158,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 		
 	get_tree().call_group(group_a.name, "go_to_position", group_a.global_position) # stop the walk
 	get_tree().call_group("unit", "set_physics_process", true)
-	Global.main_camera.focus_target = null
 	Global.main_ui.hide_header()
+	Global.main_ui.update_group_buttons()
+	
+	is_in_combat = false
