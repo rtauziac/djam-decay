@@ -26,7 +26,7 @@ func _physics_process(delta):
 			if not $NavigationAgent2D.is_target_reached():
 				apply_central_force(($NavigationAgent2D.get_next_path_position() - global_position).normalized() * 100)
 				var move_vector = previous_physics_position - global_position
-				walk_stamina -= pow(move_vector.length() * 0.7, 1.5)
+				walk_stamina -= move_vector.length() #pow(move_vector.length() * 0.7, 1.5)
 	if $NavigationAgent2D.is_target_reached():
 		if global_position.distance_to($NavigationAgent2D.target_position) > $NavigationAgent2D.target_desired_distance * wake_target_factor:
 			$NavigationAgent2D.target_position = $NavigationAgent2D.target_position

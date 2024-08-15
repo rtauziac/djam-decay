@@ -50,11 +50,11 @@ script = ExtResource("2_fdhqp")
 [node name="World" type="Node2D" parent="."]
 y_sort_enabled = true
 
-[node name="Groups" type="Node2D" parent="World"]
-script = ExtResource("1_n6ffw")
-
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="World"]
 navigation_polygon = SubResource("NavigationPolygon_n13jf")
+
+[node name="Groups" type="Node2D" parent="World"]
+script = ExtResource("1_n6ffw")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(3528, 0)

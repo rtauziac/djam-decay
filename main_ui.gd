@@ -47,12 +47,11 @@ func on_player_changed(player: Player):
 	
 	for button in $PlayerTurnControl/GroupButtonLayout.get_children():
 		button.queue_free()
-	if not player.user_controlled:
-		return
+	if player.user_controlled:
+		update_group_buttons()
 	
-	update_group_buttons(false)
 
-func update_group_buttons(remove: bool = true):
+func update_group_buttons():
 	for button in $PlayerTurnControl/GroupButtonLayout.get_children():
 		button.visible = false
 		button.queue_free()

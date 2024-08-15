@@ -20,8 +20,12 @@ func _ready():
 func move_to_position(position: Vector2):
 	controllable = false
 	moving = false
+	for tween in get_tree().get_processed_tweens():
+		if tween.get_meta("tween") == "move_to_position":
+			tween.kill()
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_position", position, clamp((global_position - position).length() / 1000, 0.3, 1.2)).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	tween.set_meta("tween", "move_to_position")
 	tween.tween_callback(func(): controllable = true)
 
 

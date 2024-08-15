@@ -6,7 +6,9 @@ signal engage_combat(group_a: SelectableGroup, group_b: SelectableGroup)
 signal group_stoped_moving()
 
 var moving = false
+var race: Unit.Race
 @onready var previous_position = global_position
+
 
 @export var selected: bool : get = get_selected, set = set_selected
 func get_selected() -> bool:
@@ -46,6 +48,7 @@ func check_node_speed():
 			print("stopped moving")
 		previous_position = global_position
 
+
 func _on_input_event(viewport: Viewport, event, shape_idx):
 	if Global.game.current_player == null or not Global.game.current_player.user_controlled:
 		return
@@ -74,3 +77,7 @@ func _on_area_entered(area: SelectableGroup):
 		#print("%s wants to fight %s" % [name, area.name])
 		emit_signal(engage_combat.get_name(), self, area)
 
+
+
+func _on_check_speed_timer_timeout():
+	check_node_speed()

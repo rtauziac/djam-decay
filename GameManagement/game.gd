@@ -2,8 +2,10 @@ extends Node2D
 class_name Game
 
 signal player_changed(player: Player)
+signal combat_started()
+signal combat_ended()
 
-var stamina_start_amount = 500
+var stamina_start_amount = 650
 
 var players: Array[Player]
 var current_player: Player
@@ -22,12 +24,13 @@ func init_game():
 	var map_size = 3000
 	
 	var big_obstacles = [preload("res://map/obstacles/rock.tscn"), preload("res://map/obstacles/tower.tscn")]
-	for i_big_obstacle in 6:
+	var big_obstacle_count = 9
+	for i_big_obstacle in big_obstacle_count:
 		var i_spawn = randi_range(0, big_obstacles.size() - 1)
 		var big_obstacle = big_obstacles[i_spawn].instantiate()
 		navigation.add_child(big_obstacle)
 		var distance = ((map_size - 400) * randf()) + 400
-		var angle = i_big_obstacle * (PI / 3)
+		var angle = i_big_obstacle * (PI * 2) / big_obstacle_count
 		big_obstacle.position = Vector2(cos(angle) * distance, sin(angle) * distance)
 		big_obstacle.rotation = randf() * PI * 2
 	
@@ -75,7 +78,8 @@ func init_game():
 func skip_turn():
 	var player_index = players.find(current_player)
 	var next_player_index = (player_index + 1) % players.size()
-	change_player(players[next_player_index])
+	var next_player = players[next_player_index]
+	change_player(next_player)
 
 
 func change_player(player: Player):
@@ -103,6 +107,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 		return
 	
 	is_in_combat = true
+	emit_signal(combat_started.get_name())
 	
 	var combat_list = combats_made_during_turn[group_a.name]
 	combat_list.append(group_b.name)
@@ -159,6 +164,8 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	get_tree().call_group(group_a.name, "go_to_position", group_a.global_position) # stop the walk
 	get_tree().call_group("unit", "set_physics_process", true)
 	Global.main_ui.hide_header()
-	Global.main_ui.update_group_buttons()
+	if (Global.game.current_player.user_controlled):
+		Global.main_ui.update_group_buttons()
 	
 	is_in_combat = false
+	emit_signal(combat_ended.get_name())
