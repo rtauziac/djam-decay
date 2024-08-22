@@ -15,9 +15,3 @@ shape = SubResource("CircleShape2D_efu2m")
 
 [node name="Body" parent="Node2D" index="0"]
 texture = ExtResource("2_knwdn")
-
-[node name="Angry" parent="Node2D" index="2"]
-position = Vector2(2, -68.3453)
-
-[node name="Dead" parent="Node2D" index="3"]
-position = Vector2(2, -68.3453)

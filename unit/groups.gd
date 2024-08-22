@@ -16,9 +16,8 @@ func make_initial_groups():
 		var group: SelectableGroup = preload("res://unit/group.tscn").instantiate()
 		group.race = Unit.Race.values()[i_race % 3]
 		var group_angle = rand_start_angle + (PI * 2 / (races.size() * groups_by_player)) * i_race
-		print("group_angle %f" % group_angle)
 		group.global_position = Vector2.RIGHT.rotated(group_angle) * randf_range(800, 2600)
-		group.name = race_names[i_race % 3]
+		group.name = "%s-%d" % [Unit.Race.keys()[group.race], i_race]
 		group.wants_to_be_selected.connect(handle_group_selection)
 		group.engage_combat.connect(Global.game.combat_groups)
 		Global.game.player_changed.connect(func(): for group_connect: SelectableGroup in get_children(): group_connect.selected = false)
@@ -44,6 +43,11 @@ func _physics_process(delta):
 		var real_stamina = 0
 		for unit: Unit in groups:
 			real_stamina += unit.walk_stamina
+			if unit.walk_stamina <= 0 and not unit.tired:
+				unit.tired = true
+				if not group.any_unit_tired:
+					group.any_unit_tired = true
+					get_tree().call_group(group.name, "go_to_position", unit.global_position)
 			if bounds_new.has_point(unit.global_position) == false:
 				bounds_new = bounds_new.expand(unit.global_position)
 			var unit_distance = group.global_position.distance_to(unit.global_position) + (20)
@@ -76,10 +80,12 @@ func _on_game_player_changed(player: Player):
 	if player_groups.size() == 0:
 		return
 	
-	for player_group in player_groups:
+	for player_group: SelectableGroup in player_groups:
+		player_group.any_unit_tired = false
 		var groups = get_tree().get_nodes_in_group(player_group.name)
 		for node: Unit in groups:
 			node.set_walk_stamina(Global.game.stamina_start_amount)
+			node.tired = false
 	var first_group: SelectableGroup = player_groups[0]
 	first_group.emit_wants_to_be_selected()
 	Global.main_camera.move_to_position(first_group.global_position)

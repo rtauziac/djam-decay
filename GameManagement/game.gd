@@ -5,7 +5,7 @@ signal player_changed(player: Player)
 signal combat_started()
 signal combat_ended()
 
-var stamina_start_amount = 650
+var stamina_start_amount = 670
 
 var players: Array[Player]
 var current_player: Player
@@ -113,7 +113,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	combat_list.append(group_b.name)
 	
 	Global.main_ui.show_header("Fight!")
-	get_tree().call_group("unit", "set_physics_process", false)
+	get_tree().call_group("unit", "set_can_walk", false)
 	
 	var group_a_count = group_a_nodes.size()
 	var group_b_count = group_b_nodes.size()
@@ -162,7 +162,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 			group_a.queue_free()
 		
 	get_tree().call_group(group_a.name, "go_to_position", group_a.global_position) # stop the walk
-	get_tree().call_group("unit", "set_physics_process", true)
+	get_tree().call_group("unit", "set_can_walk", true)
 	Global.main_ui.hide_header()
 	if (Global.game.current_player.user_controlled):
 		Global.main_ui.update_group_buttons()

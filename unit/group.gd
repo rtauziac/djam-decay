@@ -8,6 +8,7 @@ signal group_stoped_moving()
 var moving = false
 var race: Unit.Race
 @onready var previous_position = global_position
+var any_unit_tired := false
 
 
 @export var selected: bool : get = get_selected, set = set_selected
@@ -45,7 +46,6 @@ func check_node_speed():
 			moving = false
 			previous_position = global_position
 			emit_signal("group_stoped_moving")
-			print("stopped moving")
 		previous_position = global_position
 
 
