@@ -35,8 +35,8 @@ func set_stamina(new_val: float):
 
 
 func check_node_speed():
-	var move_threshold = 6
-	var stop_threshold = 2
+	var move_threshold = 1
+	var stop_threshold = 1
 	if not moving:
 		if previous_position.distance_to(global_position) > move_threshold:
 			moving = true

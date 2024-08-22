@@ -79,7 +79,16 @@ func skip_turn():
 	var player_index = players.find(current_player)
 	var next_player_index = (player_index + 1) % players.size()
 	var next_player = players[next_player_index]
-	change_player(next_player)
+	var next_player_groups = Global.groups.get_children().filter(func(a_group: SelectableGroup): return a_group.name.find(Unit.Race.keys()[next_player.race]) > -1 )
+	while next_player_groups.size() == 0 and next_player != current_player:
+		next_player_index = (next_player_index + 1) % players.size()
+		next_player = players[next_player_index]
+		next_player_groups = Global.groups.get_children().filter(func(a_group: SelectableGroup): return a_group.name.find(Unit.Race.keys()[next_player.race]) > -1 )
+		print("%s - %s" % [next_player.name, current_player.name])
+	if next_player == current_player:
+		print("Game is done!")
+	else:
+		change_player(next_player)
 
 
 func change_player(player: Player):
@@ -137,7 +146,7 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	
 	var group_b_dead = get_tree().get_first_node_in_group(group_b.name) == null
 	if group_b_dead:
-		group_b.queue_free()
+		group_b.free()
 	
 	if not group_b_dead:
 		group_b_nodes = get_tree().get_nodes_in_group(group_b.name)
@@ -159,9 +168,10 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 		await get_tree().create_timer(1.5).timeout
 		
 		if get_tree().get_first_node_in_group(group_a.name) == null:
-			group_a.queue_free()
-		
-	get_tree().call_group(group_a.name, "go_to_position", group_a.global_position) # stop the walk
+			group_a.free()
+	
+	if is_instance_valid(group_a):
+		get_tree().call_group(group_a.name, "go_to_position", group_a.global_position) # stop the walk
 	get_tree().call_group("unit", "set_can_walk", true)
 	Global.main_ui.hide_header()
 	if (Global.game.current_player.user_controlled):
