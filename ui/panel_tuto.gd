@@ -27,4 +27,3 @@ func next_page():
 func previous_page():
 	content_index -= 1
 	update_current_page()
-

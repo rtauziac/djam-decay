@@ -69,7 +69,7 @@ func emit_wants_to_be_selected():
 
 
 func _on_area_entered(area: SelectableGroup):
-	if area == null:
+	if not selected or area == null:
 		return
 	
 	var self_race: Unit.Race = get_tree().get_nodes_in_group(name)[0].race

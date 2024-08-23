@@ -1,7 +1,7 @@
 The battle unfolds automatically. The one whose turn it is attacks first.
-You can only fight a group once by turn.
+You can only fight a group [b]once by turn[/b].
 At the end of the battle, groups lose more or fewer individuals depending on the faction of the opposing group.
 
-Rat > Dog
+[b]Rat > Dog
 Dog > Cat
-Cat > Rat
+Cat > Rat[/b]

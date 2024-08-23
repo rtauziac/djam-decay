@@ -39,7 +39,7 @@ func _physics_process(delta):
 		if walk_stamina > 0:
 			if $NavigationAgent2D.is_target_reachable():
 				if not $NavigationAgent2D.is_target_reached():
-					apply_central_force(($NavigationAgent2D.get_next_path_position() - global_position).normalized() * 1000)
+					apply_central_force(($NavigationAgent2D.get_next_path_position() - global_position).normalized() * 100)
 					walk_stamina -= move_vector.length() #pow(move_vector.length() * 0.7, 1.5)
 					
 		if $NavigationAgent2D.is_target_reached():

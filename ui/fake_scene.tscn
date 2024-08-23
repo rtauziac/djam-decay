@@ -1,0 +1,362 @@
+[gd_scene load_steps=17 format=3 uid="uid://2sesy4gnug0j"]
+
+[ext_resource type="Texture2D" uid="uid://ddaey10oaamvw" path="res://textures/Map.png" id="1_qfimi"]
+[ext_resource type="Texture2D" uid="uid://cw668fvoxoec" path="res://textures/atlas/tree1.tres" id="2_6jf0r"]
+[ext_resource type="Texture2D" uid="uid://lbhmkobhpsr3" path="res://textures/Rat.png" id="3_hk3hq"]
+[ext_resource type="Texture2D" uid="uid://vorb55o3n0gc" path="res://textures/Eyes.png" id="4_dsrgo"]
+[ext_resource type="Texture2D" uid="uid://845u1b8lsecw" path="res://textures/Cat.png" id="5_6miaf"]
+[ext_resource type="Texture2D" uid="uid://carr7ij2iloq4" path="res://textures/Dog.png" id="6_0wjc8"]
+
+[sub_resource type="Environment" id="Environment_ha11o"]
+background_mode = 1
+background_color = Color(0, 0, 0.407843, 1)
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+reflected_light_source = 1
+tonemap_mode = 3
+tonemap_exposure = 0.57
+tonemap_white = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ej46k"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_qfimi")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8mjk7"]
+material = SubResource("StandardMaterial3D_ej46k")
+size = Vector2(60, 60)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_s56xu"]
+load_path = "res://.godot/imported/Ocean.jpg-b8f53918a0c9e6499457391b9b66cec9.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ieoae"]
+albedo_texture = SubResource("CompressedTexture2D_s56xu")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_qtr30"]
+material = SubResource("StandardMaterial3D_ieoae")
+size = Vector2(160, 160)
+
+[sub_resource type="GDScript" id="GDScript_ib2yi"]
+script/source = "extends MeshInstance3D
+
+
+func _process(delta: float) -> void:
+	rotate_y(delta * 0.04)
+"
+
+[sub_resource type="GDScript" id="GDScript_55p8t"]
+script/source = "extends Camera3D
+
+@export var curve_x: Curve
+@export var curve_y: Curve
+
+@export var speed := 1.0
+@export var amplitude := 1.0
+@export var amplitude_rotation := 1.0
+
+var progress := 0.0
+
+@onready var lerped_position = position
+
+func _ready() -> void:
+	curve_x.bake()
+	curve_y.bake()
+
+
+func _process(delta: float) -> void:
+	progress += delta * speed * 0.1
+	progress = progress - floor(progress)
+	var x = curve_x.sample_baked(progress) * amplitude
+	position.x = x
+	position.y = curve_y.sample_baked(progress) * amplitude
+	
+	look_at(get_node(\"../Marker3D\").global_position, ((lerped_position - position) * 0.6 + Vector3.UP).normalized(), true)
+	
+	lerped_position = lerp(lerped_position, position, delta * 2.5)
+"
+
+[sub_resource type="Curve" id="Curve_dvt4v"]
+min_value = -1.0
+_data = [Vector2(0, 0.790009), 0.0, 0.694362, 0, 1, Vector2(0.0840065, 0.84834), 0.0, 0.0, 0, 0, Vector2(0.257674, -0.333832), 0.253381, 0.253381, 0, 0, Vector2(0.382876, -0.294944), 0.0, 0.0, 0, 0, Vector2(0.524233, -0.64493), 0.0, 0.0, 0, 0, Vector2(0.815024, 0.663626), 0.0, 0.0, 0, 0, Vector2(0.899838, 0.463356), 0.0, 0.0, 0, 0, Vector2(1, 0.790009), 3.26126, 0.0, 1, 0]
+point_count = 8
+
+[sub_resource type="Curve" id="Curve_qoomv"]
+min_value = -1.0
+_data = [Vector2(0, 0.294197), 0.0, -0.609397, 0, 1, Vector2(0.0638126, 0.25531), 0.0, 0.0, 0, 0, Vector2(0.20517, 0.333084), 0.0, 0.0, 0, 0, Vector2(0.322294, 0.502244), 0.0, 0.0, 0, 0, Vector2(0.399031, 0.683069), 0.0, 0.0, 0, 0, Vector2(0.512116, -0.469937), -0.0802374, -0.0802374, 0, 0, Vector2(0.572698, -0.333832), 0.0, 0.0, 0, 0, Vector2(0.629241, -0.411606), 0.0, 0.0, 0, 0, Vector2(0.835218, 0.303919), 0.0, 0.0, 0, 0, Vector2(0.920032, 0.371971), 0.0, 0.0, 0, 0, Vector2(1, 0.294197), -0.972574, 0.0, 1, 0]
+point_count = 11
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ha11o")
+
+[node name="MeshMap" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_8mjk7")
+metadata/_edit_lock_ = true
+
+[node name="MeshSea" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.624359, 0)
+mesh = SubResource("PlaneMesh_qtr30")
+script = SubResource("GDScript_ib2yi")
+metadata/_edit_lock_ = true
+
+[node name="CameraRef" type="Node3D" parent="."]
+transform = Transform3D(0.823523, -0.242209, 0.512977, -1.30385e-08, 0.904269, 0.426963, -0.567283, -0.351614, 0.744686, 4.32773, 3.66777, 4.70515)
+
+[node name="Camera3D" type="Camera3D" parent="CameraRef"]
+transform = Transform3D(1, 5.96046e-08, -6.25849e-07, 0, 1, 2.98023e-07, 0, -2.98023e-08, 1, 0, 0, 0)
+current = true
+fov = 60.0
+script = SubResource("GDScript_55p8t")
+curve_x = SubResource("Curve_dvt4v")
+curve_y = SubResource("Curve_qoomv")
+speed = 0.712
+amplitude = 0.195
+amplitude_rotation = 10000.0
+
+[node name="Marker3D" type="Marker3D" parent="CameraRef"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.23872e-07, 2.83122e-07, 19.5093)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1.31134e-07, 1, 0, -1, 1.31134e-07, 0, 9.65109, 0)
+light_energy = 0.0
+sky_mode = 1
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="Tree1_1" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 3.72056, 0, 1.56241)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_2" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -1.69903, 0, 0.23779)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_3" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.716624, -4.76837e-07, -0.937454)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_4" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -3.77635, -4.76837e-07, -2.93808)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_5" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -3.07374, -4.76837e-07, -3.39259)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_6" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.0688291, 0, -15.8879)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_7" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -12.8871, 0, -10.9245)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_8" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -10.8837, 0, -10.2878)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_9" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.589116, 0, 3.18893)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_10" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -1.247, 0, 1.13025)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_11" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -9.91857, -9.53674e-07, -2.4825)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_12" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 6.35977, -1.90735e-06, -7.19107)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_13" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 6.44736, -9.53674e-07, -4.237)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_14" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 6.20944, -9.53674e-07, 0.00194502)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Tree1_15" type="Sprite3D" parent="Trees"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.96827, -1.90735e-06, -11.8796)
+offset = Vector2(0, 40)
+billboard = 2
+texture = ExtResource("2_6jf0r")
+
+[node name="Units" type="Node3D" parent="."]
+
+[node name="Rat" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, -1.96822, 0.130519, -0.530535)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("3_hk3hq")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat2" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, -1.71689, 0.130519, -1.14696)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("3_hk3hq")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat3" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, -1.08363, 0.130519, -1.80921)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("3_hk3hq")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat4" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, 3.99841, 0.130519, -7.48342)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("5_6miaf")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat5" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, 5.0237, 0.130519, -7.30048)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("5_6miaf")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat6" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, 4.85118, 0.130519, -9.34861)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("5_6miaf")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat7" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, 4.32236, 0.130519, -10.8867)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("5_6miaf")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat8" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, 5.5721, 0.130519, -11.9514)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("5_6miaf")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat9" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, -15.0375, 0.130519, -1.59083)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("6_0wjc8")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat10" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, -13.9105, 0.130519, -1.75966)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("6_0wjc8")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat11" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, -11.818, 0.130519, -2.36769)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("6_0wjc8")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")
+
+[node name="Rat12" type="Sprite3D" parent="Units"]
+transform = Transform3D(0.897, 0, 0, 0, 0.897, 0, 0, 0, 0.897, -12.9546, 0.130519, -3.63987)
+offset = Vector2(0, 52)
+billboard = 2
+texture = ExtResource("6_0wjc8")
+metadata/_edit_group_ = true
+
+[node name="Eyes" type="Sprite3D" parent="Units/Rat12"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0660888, 0.755584, 0.0488254)
+billboard = 2
+texture = ExtResource("4_dsrgo")

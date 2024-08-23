@@ -1,0 +1,353 @@
+[gd_scene load_steps=12 format=3 uid="uid://cbuuqfa1hfy2b"]
+
+[ext_resource type="Theme" uid="uid://cxd3ej5f26fs7" path="res://ui/game_theme.tres" id="1_lfyff"]
+[ext_resource type="PackedScene" uid="uid://2sesy4gnug0j" path="res://ui/fake_scene.tscn" id="2_nyfcs"]
+[ext_resource type="Texture2D" uid="uid://lbhmkobhpsr3" path="res://textures/Rat.png" id="3_sw1vf"]
+[ext_resource type="Texture2D" uid="uid://vorb55o3n0gc" path="res://textures/Eyes.png" id="4_vopdn"]
+[ext_resource type="Texture2D" uid="uid://845u1b8lsecw" path="res://textures/Cat.png" id="5_3h5an"]
+[ext_resource type="Texture2D" uid="uid://carr7ij2iloq4" path="res://textures/Dog.png" id="6_cmbb1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wm4ja"]
+
+[sub_resource type="GDScript" id="GDScript_dk1lp"]
+script/source = "extends TabContainer
+
+
+func _ready() -> void:
+	current_tab = 0
+"
+
+[sub_resource type="GDScript" id="GDScript_plwup"]
+script/source = "extends Button
+
+
+func _ready():
+	if OS.has_feature(\"web\") or OS.has_feature(\"android\") or OS.has_feature(\"ios\"):
+		free()
+
+
+func _on_pressed() -> void:
+	get_tree().quit()
+"
+
+[sub_resource type="GDScript" id="GDScript_31lnd"]
+script/source = "extends Control
+
+
+func _on_button_rat_pressed() -> void:
+	Global.player_1_selected_faction = Unit.Race.Rat
+	get_tree().change_scene_to_file(\"res://test_2d.tscn\")
+
+
+func _on_button_cat_pressed() -> void:
+	Global.player_1_selected_faction = Unit.Race.Cat
+	get_tree().change_scene_to_file(\"res://test_2d.tscn\")
+
+
+func _on_button_dog_pressed() -> void:
+	Global.player_1_selected_faction = Unit.Race.Dog
+	get_tree().change_scene_to_file(\"res://test_2d.tscn\")
+"
+
+[sub_resource type="GDScript" id="GDScript_y3x23"]
+script/source = "extends RichTextLabel
+
+
+func _on_meta_clicked(meta: Variant) -> void:
+	OS.shell_open(meta)
+"
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_lfyff")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="FakeScene" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_nyfcs")]
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_wm4ja")
+current_tab = 0
+tabs_visible = false
+script = SubResource("GDScript_dk1lp")
+
+[node name="Main" type="Control" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Main"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -144.0
+offset_top = -155.0
+offset_right = -17.0
+offset_bottom = -19.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="ButtonStartGame" type="Button" parent="TabContainer/Main/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_neighbor_bottom = NodePath("../ButtonCredits")
+focus_next = NodePath("../ButtonCredits")
+text = "Start game"
+
+[node name="ButtonCredits" type="Button" parent="TabContainer/Main/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../ButtonStartGame")
+focus_neighbor_bottom = NodePath("../ButtonExit")
+focus_next = NodePath("../ButtonExit")
+focus_previous = NodePath("../ButtonStartGame")
+text = "Credits"
+
+[node name="ButtonExit" type="Button" parent="TabContainer/Main/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+focus_neighbor_top = NodePath("../ButtonCredits")
+focus_previous = NodePath("../ButtonCredits")
+text = "Quit game"
+script = SubResource("GDScript_plwup")
+
+[node name="RaceSelect" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+script = SubResource("GDScript_31lnd")
+metadata/_tab_index = 1
+
+[node name="ColorRect" type="ColorRect" parent="TabContainer/RaceSelect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.188235)
+
+[node name="Back" type="Button" parent="TabContainer/RaceSelect"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -98.0
+offset_top = -75.0
+offset_right = -17.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Back"
+
+[node name="Control" type="Control" parent="TabContainer/RaceSelect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 121.0
+offset_top = 138.0
+offset_right = -121.0
+offset_bottom = -93.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TabContainer/RaceSelect/Control"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 48.0
+grow_horizontal = 2
+theme_type_variation = &"SmallHeaderLabel"
+text = "Choose your faction to start with"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/RaceSelect/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxFaction" type="VBoxContainer" parent="TabContainer/RaceSelect/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="Rat" type="TextureRect" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction"]
+layout_mode = 2
+texture = ExtResource("3_sw1vf")
+
+[node name="Eyes" type="TextureRect" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction/Rat"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 14.0
+offset_right = 91.0
+offset_bottom = 67.0
+texture = ExtResource("4_vopdn")
+
+[node name="ButtonRat" type="Button" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction"]
+layout_mode = 2
+text = "Rat"
+
+[node name="BoxFaction2" type="VBoxContainer" parent="TabContainer/RaceSelect/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="Cat" type="TextureRect" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction2"]
+layout_mode = 2
+texture = ExtResource("5_3h5an")
+
+[node name="Eyes" type="TextureRect" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction2/Cat"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 14.0
+offset_right = 91.0
+offset_bottom = 67.0
+texture = ExtResource("4_vopdn")
+
+[node name="ButtonCat" type="Button" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction2"]
+layout_mode = 2
+text = "Cat"
+
+[node name="BoxFaction3" type="VBoxContainer" parent="TabContainer/RaceSelect/Control/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="Dog" type="TextureRect" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction3"]
+layout_mode = 2
+texture = ExtResource("6_cmbb1")
+
+[node name="Eyes" type="TextureRect" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction3/Dog"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 14.0
+offset_right = 91.0
+offset_bottom = 67.0
+texture = ExtResource("4_vopdn")
+
+[node name="ButtonDog" type="Button" parent="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction3"]
+layout_mode = 2
+text = "Dog"
+
+[node name="Credits" type="Control" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="ColorRect2" type="ColorRect" parent="TabContainer/Credits"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.188235)
+
+[node name="ColorRect" type="ColorRect" parent="TabContainer/Credits"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 74.0
+offset_top = 136.0
+offset_right = -74.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.52549)
+
+[node name="RichTextLabelCredits" type="RichTextLabel" parent="TabContainer/Credits/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 19.0
+offset_top = 17.0
+offset_right = -19.0
+offset_bottom = -17.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "Code, art and sound: [b]Crazyrems[/b]
+
+Game made with [b]Godot[/b] for the [b]Discord Jam 2024[/b].
+
+I am a full time dev, hobbyist gamedev in my spare time. I like learning, creating, experimenting and teaching things. I also love graphic design.
+If you like my work, follow me [url=https://linktr.ee/crazyrems]@crazyrems[/url] on your favorite social network.
+
+Everybody can create, why not you?"
+script = SubResource("GDScript_y3x23")
+
+[node name="Back" type="Button" parent="TabContainer/Credits"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -107.0
+offset_top = -81.0
+offset_right = -26.0
+offset_bottom = -21.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Back"
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -208.0
+offset_top = 35.0
+offset_right = 208.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme_type_variation = &"TitleLabel"
+text = "Claws extinct"
+
+[connection signal="pressed" from="TabContainer/Main/VBoxContainer/ButtonStartGame" to="TabContainer" method="set_current_tab" binds= [1]]
+[connection signal="pressed" from="TabContainer/Main/VBoxContainer/ButtonCredits" to="TabContainer" method="set_current_tab" binds= [2]]
+[connection signal="pressed" from="TabContainer/Main/VBoxContainer/ButtonExit" to="TabContainer/Main/VBoxContainer/ButtonExit" method="_on_pressed"]
+[connection signal="pressed" from="TabContainer/RaceSelect/Back" to="TabContainer" method="set_current_tab" binds= [0]]
+[connection signal="pressed" from="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction/ButtonRat" to="TabContainer/RaceSelect" method="_on_button_rat_pressed"]
+[connection signal="pressed" from="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction2/ButtonCat" to="TabContainer/RaceSelect" method="_on_button_cat_pressed"]
+[connection signal="pressed" from="TabContainer/RaceSelect/Control/HBoxContainer/BoxFaction3/ButtonDog" to="TabContainer/RaceSelect" method="_on_button_dog_pressed"]
+[connection signal="meta_clicked" from="TabContainer/Credits/ColorRect/RichTextLabelCredits" to="TabContainer/Credits/ColorRect/RichTextLabelCredits" method="_on_meta_clicked"]
+[connection signal="pressed" from="TabContainer/Credits/Back" to="TabContainer" method="set_current_tab" binds= [0]]

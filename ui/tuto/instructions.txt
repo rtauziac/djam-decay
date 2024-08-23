@@ -1,2 +1,2 @@
 In this game, you lead a tribe and must survive as long as possible.
-You need to gather resources, engage in battles, and delay your decay.
+You need to gather resources, engage in battles, and delay your [b]decay[/b].

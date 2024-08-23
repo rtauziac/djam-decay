@@ -24,7 +24,7 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 cell_size = 10.0
 agent_radius = 30.0
 
-[node name="Node2D" type="Node2D"]
+[node name="Test2D" type="Node2D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -42,6 +42,7 @@ scale = Vector2(3.5752, 3.5752)
 texture = ExtResource("2_01prg")
 
 [node name="Game" type="Node2D" parent="."]
+process_mode = 1
 script = ExtResource("1_bo2r8")
 
 [node name="Camera2D" type="Camera2D" parent="."]

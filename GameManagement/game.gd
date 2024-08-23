@@ -65,7 +65,7 @@ func init_game():
 	dog_player.user_controlled = Global.player_1_selected_faction == Unit.Race.Dog
 	players.append(dog_player)
 	
-	if dog_player.user_controlled: user_player = cat_player
+	if dog_player.user_controlled: user_player = dog_player
 	
 	current_player = user_player
 	
