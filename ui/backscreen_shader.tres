@@ -1,0 +1,138 @@
+[gd_resource type="VisualShader" load_steps=8 format=3 uid="uid://doihn0q0g0ssu"]
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_ob8mg"]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, 0.7]
+op_type = 4
+
+[sub_resource type="VisualShaderNodeExpression" id="VisualShaderNodeExpression_k1yxp"]
+size = Vector2(660, 420)
+expression = "int iterations = 3;
+float half_strength = strength_in / 2.0;
+float ratio = SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y;
+
+for (int i = 0; i < iterations; i += 1)
+{
+	for (int j = 0; j < iterations; j += 1)
+	{
+		color_out += texture( SCREEN_TEXTURE, SCREEN_UV + vec2(((strength_in / float(iterations) * float(i)) - half_strength), ((strength_in / float(iterations) * float(j)) - half_strength) / ratio));
+	}
+}
+color_out /= float(iterations * iterations);"
+
+[sub_resource type="VisualShaderNodeGlobalExpression" id="VisualShaderNodeGlobalExpression_364ha"]
+size = Vector2(560, 300)
+expression = "uniform sampler2D SCREEN_TEXTURE: hint_screen_texture;"
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_5pfmx"]
+parameter_name = "strength"
+hint = 1
+default_value_enabled = true
+default_value = 0.01
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_a2jxi"]
+source = 1
+
+[sub_resource type="VisualShaderNodeColorFunc" id="VisualShaderNodeColorFunc_ogfpr"]
+function = 3
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_h83pm"]
+constant = Color(0, 0, 0, 1)
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform float strength : hint_range(0, 1) = 0.00999999977648;
+
+
+// GlobalExpression:0
+	uniform sampler2D SCREEN_TEXTURE: hint_screen_texture;
+
+void fragment() {
+// ColorConstant:7
+	vec4 n_out7p0 = vec4(0.000000, 0.000000, 0.000000, 1.000000);
+
+
+// FloatParameter:13
+	float n_out13p0 = strength;
+
+
+	vec4 n_out11p0;
+// Expression:11
+	n_out11p0 = vec4(0.0, 0.0, 0.0, 0.0);
+	{
+		int iterations = 3;
+		float half_strength = n_out13p0 / 2.0;
+		float ratio = SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y;
+		
+		for (int i = 0; i < iterations; i += 1)
+		{
+			for (int j = 0; j < iterations; j += 1)
+			{
+				n_out11p0 += texture( SCREEN_TEXTURE, SCREEN_UV + vec2(((n_out13p0 / float(iterations) * float(i)) - half_strength), ((n_out13p0 / float(iterations) * float(j)) - half_strength) / ratio));
+			}
+		}
+		n_out11p0 /= float(iterations * iterations);
+	}
+
+
+	vec3 n_out6p0;
+// ColorFunc:6
+	{
+		vec3 c = vec3(n_out11p0.xyz);
+		float r = (c.r * .393) + (c.g *.769) + (c.b * .189);
+		float g = (c.r * .349) + (c.g *.686) + (c.b * .168);
+		float b = (c.r * .272) + (c.g *.534) + (c.b * .131);
+		n_out6p0 = vec3(r, g, b);
+	}
+
+
+// Mix:10
+	float n_in10p2 = 0.70000;
+	vec3 n_out10p0 = mix(vec3(n_out7p0.xyz), n_out6p0, n_in10p2);
+
+
+// Output:0
+	COLOR.rgb = n_out10p0;
+
+
+}
+"
+graph_offset = Vector2(-1843.39, -292.98)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(440, 40)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_a2jxi")
+nodes/fragment/4/position = Vector2(-840, 340)
+nodes/fragment/6/node = SubResource("VisualShaderNodeColorFunc_ogfpr")
+nodes/fragment/6/position = Vector2(-120, 260)
+nodes/fragment/7/node = SubResource("VisualShaderNodeColorConstant_h83pm")
+nodes/fragment/7/position = Vector2(-60, 160)
+nodes/fragment/10/node = SubResource("VisualShaderNodeMix_ob8mg")
+nodes/fragment/10/position = Vector2(200, 200)
+nodes/fragment/11/node = SubResource("VisualShaderNodeExpression_k1yxp")
+nodes/fragment/11/position = Vector2(-1060, -180)
+nodes/fragment/11/size = Vector2(660, 420)
+nodes/fragment/11/input_ports = "0,0,strength_in;"
+nodes/fragment/11/output_ports = "0,5,color_out;"
+nodes/fragment/11/expression = "int iterations = 3;
+float half_strength = strength_in / 2.0;
+float ratio = SCREEN_PIXEL_SIZE.x / SCREEN_PIXEL_SIZE.y;
+
+for (int i = 0; i < iterations; i += 1)
+{
+	for (int j = 0; j < iterations; j += 1)
+	{
+		color_out += texture( SCREEN_TEXTURE, SCREEN_UV + vec2(((strength_in / float(iterations) * float(i)) - half_strength), ((strength_in / float(iterations) * float(j)) - half_strength) / ratio));
+	}
+}
+color_out /= float(iterations * iterations);"
+nodes/fragment/12/node = SubResource("VisualShaderNodeGlobalExpression_364ha")
+nodes/fragment/12/position = Vector2(-960, -500)
+nodes/fragment/12/size = Vector2(560, 300)
+nodes/fragment/12/input_ports = ""
+nodes/fragment/12/output_ports = ""
+nodes/fragment/12/expression = "uniform sampler2D SCREEN_TEXTURE: hint_screen_texture;"
+nodes/fragment/13/node = SubResource("VisualShaderNodeFloatParameter_5pfmx")
+nodes/fragment/13/position = Vector2(-1360, -180)
+nodes/fragment/connections = PackedInt32Array(10, 0, 0, 0, 7, 0, 10, 0, 6, 0, 10, 1, 11, 0, 6, 0, 13, 0, 11, 0)

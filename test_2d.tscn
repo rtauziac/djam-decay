@@ -26,10 +26,6 @@ agent_radius = 30.0
 
 [node name="Test2D" type="Node2D"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="UI" parent="CanvasLayer" instance=ExtResource("4_twutv")]
-
 [node name="RigidBody2D" parent="." instance_placeholder="res://unit/cat.tscn"]
 
 [node name="Ocean" type="Sprite2D" parent="."]
@@ -45,9 +41,6 @@ texture = ExtResource("2_01prg")
 process_mode = 1
 script = ExtResource("1_bo2r8")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-script = ExtResource("2_fdhqp")
-
 [node name="World" type="Node2D" parent="."]
 y_sort_enabled = true
 
@@ -60,8 +53,15 @@ script = ExtResource("1_n6ffw")
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(3528, 0)
 
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("2_fdhqp")
+
 [node name="ComputerPlayer" type="Node" parent="."]
 script = ExtResource("7_vpyjc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" parent="CanvasLayer" instance=ExtResource("4_twutv")]
 
 [connection signal="player_changed" from="Game" to="World/Groups" method="_on_game_player_changed"]
 [connection signal="player_changed" from="Game" to="ComputerPlayer" method="_on_game_player_changed"]

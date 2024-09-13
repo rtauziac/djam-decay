@@ -1,4 +1,5 @@
 extends Node
+class_name ComputerPlayer
 
 
 func _on_game_player_changed(player: Player):

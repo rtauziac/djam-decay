@@ -10,4 +10,6 @@
 
 ## Bugs
 
-- [ ] There is still a bug when the CPU makes an action to a group and there is a combat that startet elsewhere.
+- [x] There is still a bug when the CPU makes an action to a group and there is a combat that startet elsewhere.
+	- Should have been fixed by starting combat only on selected group
+- [ ] When cpu turn and strarting inside the only remaining enemy group, it gets stuck.

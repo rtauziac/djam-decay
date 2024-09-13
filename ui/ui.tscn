@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bffwtwiaeqg1"]
+[gd_scene load_steps=24 format=3 uid="uid://bffwtwiaeqg1"]
 
 [ext_resource type="Theme" uid="uid://cxd3ej5f26fs7" path="res://ui/game_theme.tres" id="1_qyre8"]
 [ext_resource type="Script" path="res://main_ui.gd" id="2_6rubd"]
@@ -7,60 +7,7 @@
 [ext_resource type="Script" path="res://ui/panel_tuto.gd" id="4_8er56"]
 [ext_resource type="Texture2D" uid="uid://b85bckt58lrrg" path="res://textures/arrow_left.png" id="5_86fft"]
 [ext_resource type="Texture2D" uid="uid://dwisowch10yg0" path="res://ui/user_guide.png" id="7_jr6ja"]
-
-[sub_resource type="Animation" id="Animation_n447x"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("HeaderLabel:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(90, -138)]
-}
-
-[sub_resource type="Animation" id="Animation_aor1l"]
-resource_name = "header_appear"
-length = 0.6
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("HeaderLabel:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(0.5, 1),
-"update": 0,
-"values": [Vector2(90, -135), Vector2(90, 21)]
-}
-
-[sub_resource type="Animation" id="Animation_6lbuw"]
-resource_name = "header_hide"
-length = 0.6
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("HeaderLabel:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6),
-"transitions": PackedFloat32Array(2, 1),
-"update": 0,
-"values": [Vector2(90, 21), Vector2(90, -131)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_i50fl"]
-_data = {
-"RESET": SubResource("Animation_n447x"),
-"header_appear": SubResource("Animation_aor1l"),
-"header_hide": SubResource("Animation_6lbuw")
-}
+[ext_resource type="Shader" uid="uid://doihn0q0g0ssu" path="res://ui/backscreen_shader.tres" id="8_v5rnu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ud0py"]
 content_margin_left = 6.0
@@ -133,6 +80,94 @@ _data = {
 "open": SubResource("Animation_3a3km")
 }
 
+[sub_resource type="Animation" id="Animation_n447x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HeaderLabel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(90, -138)]
+}
+
+[sub_resource type="Animation" id="Animation_aor1l"]
+resource_name = "header_appear"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HeaderLabel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(90, -135), Vector2(90, 21)]
+}
+
+[sub_resource type="Animation" id="Animation_6lbuw"]
+resource_name = "header_hide"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HeaderLabel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector2(90, 21), Vector2(90, -131)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i50fl"]
+_data = {
+"RESET": SubResource("Animation_n447x"),
+"header_appear": SubResource("Animation_aor1l"),
+"header_hide": SubResource("Animation_6lbuw")
+}
+
+[sub_resource type="GDScript" id="GDScript_1qnqp"]
+script/source = "extends Control
+
+
+func _ready():
+	visible = false
+
+
+func _on_button_pause_pressed():
+	visible = get_tree().paused
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yi4jr"]
+shader = ExtResource("8_v5rnu")
+shader_parameter/strength = 0.004
+
+[sub_resource type="GDScript" id="GDScript_dhyc5"]
+script/source = "extends Button
+
+
+func _on_pressed():
+	Global.game.skip_turn()
+	get_tree().paused = false
+"
+
+[sub_resource type="GDScript" id="GDScript_41bl7"]
+script/source = "extends Button
+
+
+func _on_pressed():
+	get_tree().paused = false
+	get_tree().change_scene_to_packed(preload(\"res://ui/menu.tscn\"))
+"
+
 [sub_resource type="GDScript" id="GDScript_mcws2"]
 script/source = "extends Button
 
@@ -177,88 +212,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("3_pmuin")
-
-[node name="TitleLabel" type="Label" parent="GameUI"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 158.0
-offset_top = 61.0
-offset_right = -158.0
-offset_bottom = -61.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_type_variation = &"TitleLabel"
-text = "Next turn"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HeaderLabel" type="Label" parent="GameUI"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 90.0
-offset_top = -138.0
-offset_right = -86.0
-offset_bottom = -53.0
-grow_horizontal = 2
-theme_type_variation = &"TitleLabel"
-text = "Fight!"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PlayerTurnControl" type="Control" parent="GameUI"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -176.0
-grow_horizontal = 2
-grow_vertical = 0
-mouse_filter = 1
-
-[node name="TeamLabel" type="Label" parent="GameUI/PlayerTurnControl"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = -86.0
-offset_right = 289.0
-offset_bottom = -66.0
-grow_vertical = 0
-
-[node name="GroupButtonLayout" type="HBoxContainer" parent="GameUI/PlayerTurnControl"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = -63.0
-offset_right = 53.0
-offset_bottom = -3.0
-grow_vertical = 0
-
-[node name="ButtonNextTurn" type="Button" parent="GameUI/PlayerTurnControl"]
-visible = false
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -119.0
-offset_top = -60.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "Next turn"
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="GameUI"]
-libraries = {
-"": SubResource("AnimationLibrary_i50fl")
-}
 
 [node name="PanelContainer" type="Panel" parent="GameUI"]
 custom_minimum_size = Vector2(421, 429)
@@ -363,6 +316,165 @@ libraries = {
 "": SubResource("AnimationLibrary_kbpny")
 }
 
+[node name="TitleLabel" type="Label" parent="GameUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 158.0
+offset_top = 61.0
+offset_right = -158.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"TitleLabel"
+text = "Next turn"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HeaderLabel" type="Label" parent="GameUI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 90.0
+offset_top = -138.0
+offset_right = -86.0
+offset_bottom = -53.0
+grow_horizontal = 2
+theme_type_variation = &"TitleLabel"
+text = "Fight!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerTurnControl" type="Control" parent="GameUI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -176.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 1
+
+[node name="TeamLabel" type="Label" parent="GameUI/PlayerTurnControl"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = -86.0
+offset_right = 289.0
+offset_bottom = -66.0
+grow_vertical = 0
+
+[node name="GroupButtonLayout" type="HBoxContainer" parent="GameUI/PlayerTurnControl"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -63.0
+offset_right = 53.0
+offset_bottom = -3.0
+grow_vertical = 0
+
+[node name="ButtonNextTurn" type="Button" parent="GameUI/PlayerTurnControl"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -119.0
+offset_top = -60.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Next turn"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GameUI"]
+libraries = {
+"": SubResource("AnimationLibrary_i50fl")
+}
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="GameUI"]
+copy_mode = 2
+
+[node name="PauseUI" type="Control" parent="GameUI"]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_1qnqp")
+
+[node name="ColorRect" type="ColorRect" parent="GameUI/PauseUI"]
+material = SubResource("ShaderMaterial_yi4jr")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PausePanel" type="Panel" parent="GameUI/PauseUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -183.0
+offset_top = -167.0
+offset_right = 183.0
+offset_bottom = 167.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PauseLabel" type="Label" parent="GameUI/PauseUI/PausePanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_top = 15.0
+offset_right = 38.5
+offset_bottom = 50.0
+grow_horizontal = 2
+theme_type_variation = &"SmallHeaderLabel"
+text = "Pause"
+uppercase = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameUI/PauseUI/PausePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 46.0
+offset_top = 74.0
+offset_right = -46.0
+offset_bottom = -45.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkipButton" type="Button" parent="GameUI/PauseUI/PausePanel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Skip computer turn
+(if it gets stuck)"
+script = SubResource("GDScript_dhyc5")
+
+[node name="QuitButton" type="Button" parent="GameUI/PauseUI/PausePanel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+text = "Quit game"
+script = SubResource("GDScript_41bl7")
+
 [node name="ButtonPause" type="Button" parent="GameUI"]
 process_mode = 3
 layout_mode = 0
@@ -373,8 +485,11 @@ offset_bottom = 68.0
 text = "||"
 script = SubResource("GDScript_mcws2")
 
-[connection signal="pressed" from="GameUI/PlayerTurnControl/ButtonNextTurn" to="GameUI" method="_on_button_next_turn_pressed"]
 [connection signal="pressed" from="GameUI/PanelContainer/Control/VBoxContainer/HBoxContainer/Left" to="GameUI/PanelContainer" method="previous_page"]
 [connection signal="pressed" from="GameUI/PanelContainer/Control/VBoxContainer/HBoxContainer/Right" to="GameUI/PanelContainer" method="next_page"]
 [connection signal="pressed" from="GameUI/PanelContainer/ButtonCollapse" to="GameUI/PanelContainer/ButtonCollapse" method="_on_pressed"]
+[connection signal="pressed" from="GameUI/PlayerTurnControl/ButtonNextTurn" to="GameUI" method="_on_button_next_turn_pressed"]
+[connection signal="pressed" from="GameUI/PauseUI/PausePanel/VBoxContainer/SkipButton" to="GameUI/PauseUI/PausePanel/VBoxContainer/SkipButton" method="_on_pressed"]
+[connection signal="pressed" from="GameUI/PauseUI/PausePanel/VBoxContainer/QuitButton" to="GameUI/PauseUI/PausePanel/VBoxContainer/QuitButton" method="_on_pressed"]
+[connection signal="pressed" from="GameUI/ButtonPause" to="GameUI/PauseUI" method="_on_button_pause_pressed" flags=3]
 [connection signal="pressed" from="GameUI/ButtonPause" to="GameUI/ButtonPause" method="_on_pressed"]

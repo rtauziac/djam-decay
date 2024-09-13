@@ -5,7 +5,7 @@ signal player_changed(player: Player)
 signal combat_started()
 signal combat_ended()
 
-var stamina_start_amount = 670
+var stamina_start_amount = 700
 
 var players: Array[Player]
 var current_player: Player
