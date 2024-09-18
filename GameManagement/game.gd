@@ -84,11 +84,35 @@ func skip_turn():
 		next_player_index = (next_player_index + 1) % players.size()
 		next_player = players[next_player_index]
 		next_player_groups = Global.groups.get_children().filter(func(a_group: SelectableGroup): return a_group.name.find(Unit.Race.keys()[next_player.race]) > -1 )
-		print("%s - %s" % [next_player.name, current_player.name])
 	if next_player == current_player:
 		print("Game is done!")
 	else:
-		change_player(next_player)
+		if get_user_players_alive().size() == 0:
+			print("Game over…")
+			Global.main_ui.show_header("You lost the game")
+			Global.main_ui.show_title("Game over…")
+		else:
+			change_player(next_player)
+
+
+func get_user_players_alive() -> Array:
+	var user_players_alive = Array()
+	for player in players:
+		var player_groups = Global.groups.get_children().filter(func(a_group: SelectableGroup): return a_group.name.find(Unit.Race.keys()[player.race]) > -1 )
+		if player_groups.size() > 0 and player.user_controlled:
+			print("user player %s has some groups" % player.race)
+			user_players_alive.push_front(player)
+	return user_players_alive
+
+
+func check_if_other_cpu_players_alive() -> bool:
+	var has_any_cpu_player_alive = false
+	for player in players:
+		var player_groups = Global.groups.get_children().filter(func(a_group: SelectableGroup): return a_group.name.find(Unit.Race.keys()[player.race]) > -1 )
+		if player_groups.size() > 0 and not player.user_controlled:
+			print("user player %s has some groups" % player.race)
+			has_any_cpu_player_alive = true
+	return has_any_cpu_player_alive
 
 
 func change_player(player: Player):
@@ -179,3 +203,9 @@ func combat_groups(group_a: SelectableGroup, group_b: SelectableGroup):
 	
 	is_in_combat = false
 	emit_signal(combat_ended.get_name())
+	var user_players_alive = get_user_players_alive()
+	if not check_if_other_cpu_players_alive() and user_players_alive.size() == 1:
+		print("You win!")
+		var winning_player: Player = user_players_alive[0]
+		Global.main_ui.show_header("Team %s won" % Unit.Race.keys()[winning_player.race])
+		Global.main_ui.show_title("You win!")

@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://ui/panel_tuto.gd" id="4_8er56"]
 [ext_resource type="Texture2D" uid="uid://b85bckt58lrrg" path="res://textures/arrow_left.png" id="5_86fft"]
 [ext_resource type="Texture2D" uid="uid://dwisowch10yg0" path="res://ui/user_guide.png" id="7_jr6ja"]
-[ext_resource type="Shader" uid="uid://doihn0q0g0ssu" path="res://ui/backscreen_shader.tres" id="8_v5rnu"]
+[ext_resource type="Shader" uid="uid://ny78cofyh47q" path="res://ui/backscreen_shader.tres" id="8_v5rnu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ud0py"]
 content_margin_left = 6.0
@@ -257,7 +257,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -1.0
 offset_top = 66.0
+offset_right = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -355,7 +357,7 @@ anchor_bottom = 1.0
 offset_top = -176.0
 grow_horizontal = 2
 grow_vertical = 0
-mouse_filter = 1
+mouse_filter = 2
 
 [node name="TeamLabel" type="Label" parent="GameUI/PlayerTurnControl"]
 layout_mode = 1

@@ -21,6 +21,8 @@ Global="*res://autoload/global.gd"
 
 [display]
 
+window/size/window_width_override=400
+window/size/window_height_override=300
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
