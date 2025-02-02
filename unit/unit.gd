@@ -72,6 +72,13 @@ func hint_group_size(size: int):
 
 
 func slash(direction: Vector2):
+	var slash_sounds = [
+		preload("res://RPG Sound Pack/battle/sword-unsheathe.wav"),
+		preload("res://RPG Sound Pack/battle/sword-unsheathe2.wav"),
+		preload("res://RPG Sound Pack/battle/sword-unsheathe3.wav"),
+		preload("res://RPG Sound Pack/battle/sword-unsheathe4.wav"),
+		preload("res://RPG Sound Pack/battle/sword-unsheathe5.wav")
+	]
 	var tween = get_tree().create_tween()
 	$Slash.visible = true
 	$Slash.rotation = direction.angle()
@@ -80,9 +87,22 @@ func slash(direction: Vector2):
 	tween.tween_callback(func(): $Slash.visible = false)
 	#$AnimationPlayer.play("hit")"
 	animation_tree.set("parameters/BlendTree/hit/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+	SoundEffectPlayer.PlayAndForget(slash_sounds[randi_range(0, slash_sounds.size() - 1)])
 
 
 func blood(direction: Vector2):
+	var blood_sounds = [
+		preload("res://RPG Sound Pack/NPC/slime/slime1.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime2.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime3.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime4.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime5.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime6.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime7.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime8.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime9.wav"),
+		preload("res://RPG Sound Pack/NPC/slime/slime10.wav")
+	]
 	var tween = get_tree().create_tween()
 	$Blood.visible = true
 	$Blood.rotation = direction.angle()
@@ -92,6 +112,7 @@ func blood(direction: Vector2):
 	tween.tween_property($Blood, "self_modulate", Color.TRANSPARENT, 0.8)
 	tween.tween_callback(func(): $Blood.visible = false; queue_free())
 	animation_tree.set("parameters/BlendTree/hit/request", AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
+	SoundEffectPlayer.PlayAndForget(blood_sounds[randi_range(0, blood_sounds.size() - 1)])
 
 
 func set_walk_stamina(stamina: float):

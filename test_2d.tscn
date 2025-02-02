@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ywgaelhpgpby"]
+[gd_scene load_steps=11 format=3 uid="uid://ywgaelhpgpby"]
 
 [ext_resource type="Script" path="res://GameManagement/game.gd" id="1_bo2r8"]
 [ext_resource type="Script" path="res://unit/groups.gd" id="1_n6ffw"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cmifkj24c1w02" path="res://textures/Ocean.jpg" id="2_oehxc"]
 [ext_resource type="PackedScene" uid="uid://bffwtwiaeqg1" path="res://ui/ui.tscn" id="4_twutv"]
 [ext_resource type="Script" path="res://computer_player.gd" id="7_vpyjc"]
+[ext_resource type="AudioStream" uid="uid://cy4fe1qagejvl" path="res://Claws extinct.ogg" id="8_ooeqm"]
 
 [sub_resource type="GDScript" id="GDScript_y251p"]
 script/source = "extends Sprite2D
@@ -62,6 +63,10 @@ script = ExtResource("7_vpyjc")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("4_twutv")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_ooeqm")
+autoplay = true
 
 [connection signal="player_changed" from="Game" to="World/Groups" method="_on_game_player_changed"]
 [connection signal="player_changed" from="Game" to="ComputerPlayer" method="_on_game_player_changed"]

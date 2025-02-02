@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cy4fe1qagejvl"
+path="res://.godot/imported/Claws extinct.ogg-10d795b205e91894c2fa93175a305003.oggvorbisstr"
+
+[deps]
+
+source_file="res://Claws extinct.ogg"
+dest_files=["res://.godot/imported/Claws extinct.ogg-10d795b205e91894c2fa93175a305003.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=87.0
+beat_count=0
+bar_beats=4
